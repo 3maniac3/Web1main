@@ -9,13 +9,16 @@ canvas.height = windowHeight;
 canvas.style.background = "white";
 
 class Fighter{
-  constructor(name, x, y){
+  constructor(name, x, y, facing){
     this.name = name;
     this.x = x;
     this.y = y;
+    this.facing = facing;
     this.moveList = [];
     this.moveIdx = 0;
     this.moveCool = 0;
+    this.jump = `streetfighter-asset/jump/${this.name}/sprite0.png`;
+    this.gravity = "up";
     
     for(let i = 0; i < 2; i ++){
       let img = `streetfighter-asset/move/${this.name}/sprite${i}.png`;
@@ -24,25 +27,52 @@ class Fighter{
   }
   
   update(){
-    ctx.save();
+    /*ctx.save();
     ctx.fillStyle = "rgb(0,255,0)";
     ctx.fillRect(this.x + 85, this.y + 20, 130, 55);
     ctx.fillStyle = "rgb(255,0,0)";
     ctx.fillRect(this.x + 215, this.y + 20, 30, 55);
-    ctx.restore();
+    ctx.restore();*/
     
-    ctx.save();
-    let img = new Image();
-    img.src = this.moveList[this.moveIdx];
-    ctx.scale(1, 1);
-    ctx.translate(260, this.y);
-    ctx.rotate(degree(90));
-    ctx.drawImage(img, 0, 0, 100, 180);
-    ctx.restore();
+    if(this.facing == "right"){
+      ctx.save();
+      let img = new Image();
+      img.src = this.moveList[this.moveIdx];
+      ctx.translate(this.x, this.y);
+      ctx.rotate(degree(90));
+      ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 100, 180);
+      ctx.restore();
+    }
+    else if(this.facing == "left"){
+      ctx.save();
+      let img = new Image();
+      img.src = this.moveList[this.moveIdx];
+      ctx.scale(1, -1);
+      ctx.translate(this.x, -this.y - 100);
+      ctx.rotate(degree(90));
+      ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 100, 180);
+      ctx.restore();
+    }
   }
   
-  attack(){
+  startJump(){
+    if(this.gravity == "up"){
+      if(this.x <= 320){
+        this.x += 5;
+      }
+      else{
+        this.gravity == "down";
+      }
+    }
     
+    if(this.gravity == "down"){
+      if(this.x >= 260){
+        this.x -= 5;
+      }
+      else{
+        gravity = "land";
+      }
+    }
   }
 }
 
@@ -59,7 +89,7 @@ let moveLeft = false;
 let moveRight = false;
 
 // characters
-let player = new Fighter("rick_de_silva", 0, 100);
+let player = new Fighter("rick_de_silva", 260, 100, "left");
 
 // system
 let system = "gameplay";
@@ -74,11 +104,19 @@ function touCheck(){
       let x = touch.pageX;
       let y = touch.pageY;
       
+      // right button
       if(x > 10 && x < 10 + 55 && y > 125 && y < 125 + 90){
         moveRight = true;
+        player.facing = "right";
       }
+      // left button
       if(x > 10 && x < 10 + 55 && y > 25 && y < 25 + 90){
         moveLeft = true;
+        player.facing = "left";
+      }
+      // jump button
+      if(x > 0 && x < 320 && y > 75 && y < 300 - 75){
+        player.gravity = "up";
       }
     });
   });
@@ -93,6 +131,7 @@ function touCheck(){
 
 function drawCharacter(){
   player.update();
+  //player.startJump();
   
   if(moveLeft && !(player.y < -18)){
     player.y -= 3;
