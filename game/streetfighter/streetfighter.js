@@ -149,7 +149,7 @@ function drawCharacter(){
     }
   }
   
-  if(moveRight && !(player.y > windowWidth + 230)){
+  if(moveRight && !(player.y > windowWidth + 180)){
     player.y += 3;
     player.moveCool ++;
         
@@ -207,7 +207,7 @@ function drawBackground(){
   
   ctx.save();
   attackBtn.src = "streetfighter-asset/image/attackbutton.png";
-  ctx.drawImage(attackBtn, -35, windowHeight - 240, 150, 300);
+  ctx.drawImage(attackBtn, -35, windowHeight - 270, 150, 300);
   ctx.restore();
 }
 
