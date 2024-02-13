@@ -173,7 +173,7 @@ function drawBackground(){
   //ctx.scale(1, 1);
   ctx.translate(360, 0)
   ctx.rotate(degree(90));
-  ctx.drawImage(background, 0, 0, 670, 290);
+  ctx.drawImage(background, 0, 0, 680, 290);
   ctx.restore();
   
   ctx.save();
