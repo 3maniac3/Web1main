@@ -27,12 +27,8 @@ class Fighter{
   }
   
   update(){
-    /*ctx.save();
-    ctx.fillStyle = "rgb(0,255,0)";
-    ctx.fillRect(this.x + 85, this.y + 20, 130, 55);
-    ctx.fillStyle = "rgb(255,0,0)";
-    ctx.fillRect(this.x + 215, this.y + 20, 30, 55);
-    ctx.restore();*/
+    drawRect("rgb(0,255,0)", this.x - 175, this.y + 20, 130, 55);
+    drawRect("rgb(255,0,0)", this.x - 45, this.y + 20, 30, 55);
     
     if(this.facing == "right"){
       ctx.save();
@@ -48,7 +44,7 @@ class Fighter{
       let img = new Image();
       img.src = this.moveList[this.moveIdx];
       ctx.scale(1, -1);
-      ctx.translate(this.x, -this.y - 100);
+      ctx.translate(this.x, -this.y - 95);
       ctx.rotate(degree(90));
       ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 100, 180);
       ctx.restore();
@@ -89,13 +85,19 @@ let moveLeft = false;
 let moveRight = false;
 
 // characters
-let player = new Fighter("rick_de_silva", 260, 100, "left");
+let player = new Fighter("rick_de_silva", 260, 100, "right");
 
 // system
 let system = "gameplay";
 
 const degree = function(setDeg){
   return setDeg * Math.PI / 180;
+}
+const drawRect = function(color, x, y, dx, dy){
+  ctx.save();
+  ctx.fillStyle = color;
+  ctx.fillRect(x, y, dx, dy);
+  ctx.restore();
 }
 
 function touCheck(){
@@ -168,15 +170,16 @@ function drawBackground(){
   
   ctx.save();
   background.src = `streetfighter-asset/image/background${backgroundIdx}.png`;
-  ctx.scale(1, 1);
-  ctx.rotate(Math.PI / 2);
-  ctx.drawImage(background, 0, 0, background.width, background.height, 0, -360, windowWidth * 2, windowHeight - 380);
+  //ctx.scale(1, 1);
+  ctx.translate(360, 0)
+  ctx.rotate(degree(90));
+  ctx.drawImage(background, 0, 0, 670, 290);
   ctx.restore();
   
   ctx.save();
   buttonPanel.src = "streetfighter-asset/image/brick_wall.png";
   ctx.translate(72, 0);
-  ctx.rotate(Math.PI / 2);
+  ctx.rotate(degree(90));
   ctx.drawImage(buttonPanel, 0, 0, windowWidth * 2, 70);
   ctx.restore();
   
@@ -199,12 +202,12 @@ function drawBackground(){
   ctx.save();
   //ctx.fillRect(0, 457, 75, 50);
   jumpBtn.src = "streetfighter-asset/image/movebutton.png";
-  ctx.drawImage(jumpBtn, 0, 320, 75, 300);
+  ctx.drawImage(jumpBtn, 0, windowHeight - 348, 75, 300);
   ctx.restore();
   
   ctx.save();
   attackBtn.src = "streetfighter-asset/image/attackbutton.png";
-  ctx.drawImage(attackBtn, -35, 410, 150, 300);
+  ctx.drawImage(attackBtn, -35, windowHeight - 240, 150, 300);
   ctx.restore();
 }
 
