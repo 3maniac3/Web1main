@@ -9,8 +9,9 @@ canvas.height = windowHeight;
 canvas.style.background = "white";
 
 class Fighter{
-  constructor(name, facing, x, y){
+  constructor(name, namedis, facing, x, y){
     this.name = name;
+    this.namedis = namedis;
     this.facing = facing;
     this.x = x;
     this.y = y;
@@ -155,7 +156,7 @@ class Fighter{
 }
 
 // background
-let backgroundIdx = 0;
+let backgroundIdx = Math.floor(Math.random() * (4 - 0) + 0);
 
 // buttons
 const leftBtn = new Image();
@@ -167,8 +168,8 @@ let moveLeft = false;
 let moveRight = false;
 
 // characters
-let player = new Fighter("rick_de_silva", "right", 260, 70);
-let enemy = new Fighter("mike_tyson", "left", 260, 500);
+let player = new Fighter("rick_de_silva", "Rick de Silva", "right", 260, 70);
+let enemy = new Fighter("mike_tyson", "Mike Tyson", "left", 260, 500);
 
 // system
 let system = "gameplay";
@@ -247,7 +248,7 @@ function drawCharacter(){
     }
   }
   
-  if(moveRight && !(player.y > windowWidth + 180)){
+  if(moveRight && !(player.y > windowWidth + 220)){
     player.y += 3;
     player.moveCool ++;
         
@@ -260,6 +261,43 @@ function drawCharacter(){
       player.moveCool = 0;
     }
   }
+}
+
+function drawPanel(){
+  let personPanel = new Image();
+  
+  ctx.save();
+  personPanel.src = "streetfighter-asset/Image/personpanel.png";
+  ctx.drawImage(personPanel, 280, 0, 80, 280);
+  ctx.restore();
+  
+  ctx.save();
+  personPanel.src = "streetfighter-asset/Image/personpanel.png";
+  ctx.scale(1, -1);
+  ctx.drawImage(personPanel, 0, 0, personPanel.width, personPanel.height, 280, -390, 80, -280);
+  ctx.restore();
+  
+  ctx.save();
+  ctx.scale(2, 2);
+  ctx.translate(178, 25);
+  ctx.rotate(degree(90));
+  ctx.fillText(`${player.namedis}`, 10, 10);
+  ctx.restore();
+  
+  ctx.save();
+  ctx.scale(2, 2);
+  ctx.translate(178, 190);
+  ctx.rotate(degree(90));
+  ctx.fillText(`${enemy.namedis}`, 10, 10);
+  ctx.restore();
+  
+  // player health
+  drawRect("rgb(255,0,0)", 302, 70, 20, 200);
+  drawRect("rgb(255,255,0)", 302, 70, 20, player.health * 2);
+  
+  // enemy health
+  drawRect("rgb(255,0,0)", 302, 400, 20, 200);
+  drawRect("rgb(255,255,0)", 302, 400, 20, enemy.health * 2);
 }
 
 function drawBackground(){
@@ -317,6 +355,7 @@ function mainLoop(){
   if(system == "gameplay"){
     drawBackground();
     drawCharacter();
+    drawPanel();
   }
 }
 
