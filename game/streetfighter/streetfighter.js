@@ -9,16 +9,20 @@ canvas.height = windowHeight;
 canvas.style.background = "white";
 
 class Fighter{
-  constructor(name, x, y, facing){
+  constructor(name, facing, x, y){
     this.name = name;
+    this.facing = facing;
     this.x = x;
     this.y = y;
-    this.facing = facing;
+    this.health = 100;
     this.moveList = [];
     this.moveIdx = 0;
     this.moveCool = 0;
-    this.jump = `streetfighter-asset/jump/${this.name}/sprite0.png`;
-    this.gravity = "up";
+    this.jumpSprite = `streetfighter-asset/jump/${this.name}/sprite0.png`;
+    this.gravity = "land";
+    this.attackSprite = `streetfighter-asset/attack/${this.name}/sprite0.png`;
+    this.attack = false;
+    this.attackCool = 0;
     
     for(let i = 0; i < 2; i ++){
       let img = `streetfighter-asset/move/${this.name}/sprite${i}.png`;
@@ -27,10 +31,10 @@ class Fighter{
   }
   
   update(){
-    drawRect("rgb(0,255,0)", this.x - 175, this.y + 20, 130, 55);
-    drawRect("rgb(255,0,0)", this.x - 45, this.y + 20, 30, 55);
+    //drawRect("rgb(0,255,0)", this.x - 175, this.y + 20, 130, 55);
+    //drawRect("rgb(255,0,0)", this.x - 45, this.y + 20, 30, 55);
     
-    if(this.facing == "right"){
+    if(this.facing == "right" && this.gravity == "land" && !(this.attack)){
       ctx.save();
       let img = new Image();
       img.src = this.moveList[this.moveIdx];
@@ -39,7 +43,7 @@ class Fighter{
       ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 100, 180);
       ctx.restore();
     }
-    else if(this.facing == "left"){
+    else if(this.facing == "left" && this.gravity == "land" && !(this.attack)){
       ctx.save();
       let img = new Image();
       img.src = this.moveList[this.moveIdx];
@@ -53,20 +57,98 @@ class Fighter{
   
   startJump(){
     if(this.gravity == "up"){
-      if(this.x <= 320){
+      if(this.x <= 360){
         this.x += 5;
+        if(this.facing == "right"){
+          ctx.save();
+          let img = new Image();
+          img.src = this.jumpSprite;
+          ctx.translate(this.x, this.y);
+          ctx.rotate(degree(90));
+          ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 100, 180);
+          ctx.restore();
+        }
+        else if(this.facing == "left"){
+          ctx.save();
+          let img = new Image();
+          img.src = this.jumpSprite;
+          ctx.scale(1, -1);
+          ctx.translate(this.x, -this.y - 95);
+          ctx.rotate(degree(90));
+          ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 100, 180);
+          ctx.restore();
+        }
       }
       else{
-        this.gravity == "down";
+        this.gravity = "down";
       }
     }
     
     if(this.gravity == "down"){
-      if(this.x >= 260){
+      if(this.x > 260){
         this.x -= 5;
+        if(this.facing == "right"){
+          ctx.save();
+          let img = new Image();
+          img.src = this.jumpSprite;
+          ctx.translate(this.x, this.y);
+          ctx.rotate(degree(90));
+          ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 100, 180);
+          ctx.restore();
+        }
+        else if(this.facing == "left"){
+          ctx.save();
+          let img = new Image();
+          img.src = this.jumpSprite;
+          ctx.scale(1, -1);
+          ctx.translate(this.x, -this.y - 95);
+          ctx.rotate(degree(90));
+          ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 100, 180);
+          ctx.restore();
+        }
       }
-      else{
-        gravity = "land";
+      else if(this.x == 260){
+        this.gravity = "land";
+      }
+    }
+  }
+  
+  startAttack(){
+    if(this.attack){
+      if(this.facing == "right"){
+        drawRect("rgb(0,0,255)", this.x - 80, this.y + 60, 20, 60);
+        
+        ctx.save();
+          let img = new Image();
+          img.src = this.attackSprite;
+          ctx.translate(this.x, this.y);
+          ctx.rotate(degree(90));
+          ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 100, 180);
+          ctx.restore();
+          
+        this.attackCool ++;
+        if(this.attackCool >= 5){
+          this.attack = false;
+          this.attackCool = 0;
+        }
+      }
+      else if(this.facing == "left"){
+        drawRect("rgb(0,0,255)", this.x - 80, this.y - 20, 20, 60);
+        
+        ctx.save();
+          let img = new Image();
+          img.src = this.attackSprite;
+          ctx.scale(1, -1);
+          ctx.translate(this.x, -this.y - 95);
+          ctx.rotate(degree(90));
+          ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 100, 180);
+          ctx.restore();
+          
+        this.attackCool ++;
+        if(this.attackCool >= 5){
+          this.attack = false;
+          this.attackCool = 0;
+        }
       }
     }
   }
@@ -85,7 +167,8 @@ let moveLeft = false;
 let moveRight = false;
 
 // characters
-let player = new Fighter("rick_de_silva", 260, 100, "right");
+let player = new Fighter("rick_de_silva", "right", 260, 70);
+let enemy = new Fighter("mike_tyson", "left", 260, 500);
 
 // system
 let system = "gameplay";
@@ -109,16 +192,17 @@ function touCheck(){
       // right button
       if(x > 10 && x < 10 + 55 && y > 125 && y < 125 + 90){
         moveRight = true;
-        player.facing = "right";
       }
       // left button
       if(x > 10 && x < 10 + 55 && y > 25 && y < 25 + 90){
         moveLeft = true;
-        player.facing = "left";
       }
       // jump button
-      if(x > 0 && x < 320 && y > 75 && y < 300 - 75){
+      if(x > 0 && x < 75 && y > 457 && y < 457 + 50 && player.gravity == "land"){
         player.gravity = "up";
+      }
+      if(x > 0 && x < 70 && y > 525 && y < 525 + 67){
+        player.attack = true;
       }
     });
   });
@@ -133,7 +217,21 @@ function touCheck(){
 
 function drawCharacter(){
   player.update();
-  //player.startJump();
+  enemy.update();
+  
+  player.startJump();
+  enemy.startJump();
+  
+  player.startAttack();
+  
+  if(player.y > enemy.y){
+    player.facing = "left";
+    enemy.facing = "right";
+  }
+  else{
+    player.facing = "right";
+    enemy.facing = "left";
+  }
   
   if(moveLeft && !(player.y < -18)){
     player.y -= 3;
@@ -206,6 +304,7 @@ function drawBackground(){
   ctx.restore();
   
   ctx.save();
+  //ctx.fillRect(0, 525, 70, 67);
   attackBtn.src = "streetfighter-asset/image/attackbutton.png";
   ctx.drawImage(attackBtn, -35, windowHeight - 270, 150, 300);
   ctx.restore();
@@ -221,8 +320,9 @@ function mainLoop(){
   }
 }
 
-if(system == "gameplay"){
-  touCheck();
+switch(system){
+  case "gameplay":
+    touCheck();
 }
 
 mainLoop();
