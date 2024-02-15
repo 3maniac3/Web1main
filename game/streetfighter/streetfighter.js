@@ -194,7 +194,7 @@ let moveLeft = false;
 let moveRight = false;
 
 // characters
-let player = new Fighter("rick_de_silva", "Rick de Silva", 50, "right", 260, 70);
+let player = new Fighter("rick_de_silva", "Rick de Silva", 2, "right", 260, 70);
 let enemy = new Fighter("mike_tyson", "Mike Tyson", 5, "left", 260, 300);
 
 // system
@@ -249,7 +249,7 @@ function hitDetect(){
       enemy.health -= player.strength;
     }
     if(player.y < enemy.y && player.y > enemy.y - 100 && player.x > enemy.x + 50 && player.x < enemy.x + 70){
-      enemy.health -= player.strength + 5;
+      enemy.health -= player.strength + 3;
     }
   }
   if(player.facing == "left" && enemy.alive){
@@ -257,7 +257,7 @@ function hitDetect(){
         enemy.health -= player.strength;
     }
     if(player.y > enemy.y && player.y < enemy.y + 100 && player.x > enemy.x + 50 && player.x < enemy.x + 70){
-      enemy.health -= player.strength + 5;
+      enemy.health -= player.strength + 3;
     }
   }
 }
