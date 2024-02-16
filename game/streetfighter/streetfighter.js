@@ -27,6 +27,9 @@ class Fighter{
     this.attack = false;
     this.attackCool = 0;
     this.gotHitCool = 0;
+    this.cooldown = 0;
+    this.combo = 0;
+    this.knockback = false;
     this.deadSprite = `streetfighter-asset/dead/${this.name}/sprite0.png`;
     
     for(let i = 0; i < 2; i ++){
@@ -181,8 +184,12 @@ class Fighter{
   }
 }
 
-// background
+// background & anatomi
 let backgroundIdx = Math.floor(Math.random() * (4 - 0) + 0);
+let hitCool = 50;
+
+// for the enemy
+let enemyAttackCool = 20;
 
 // buttons
 const leftBtn = new Image();
@@ -195,7 +202,7 @@ let moveRight = false;
 
 // characters
 let player = new Fighter("rick_de_silva", "Rick de Silva", 2, "right", 260, 70);
-let enemy = new Fighter("mike_tyson", "Mike Tyson", 5, "left", 260, 300);
+let enemy = new Fighter("mike_tyson", "Mike Tyson", 2, "left", 260, 300);
 
 // system
 let system = "gameplay";
@@ -228,6 +235,7 @@ function touCheck(){
       if(x > 0 && x < 75 && y > 457 && y < 457 + 50 && player.gravity == "land"){
         player.gravity = "up";
       }
+      // attack button
       if(x > 0 && x < 70 && y > 525 && y < 525 + 67){
         player.attack = true;
         hitDetect();
@@ -244,9 +252,22 @@ function touCheck(){
 }
 
 function hitDetect(){
+  // player hit and combo
   if(player.facing == "right" && enemy.alive){
     if(player.y < enemy.y && player.y > enemy.y - 100 && player.x < enemy.x + 50){
       enemy.health -= player.strength;
+      enemy.y += 5;
+      enemy.cooldown = hitCool;
+      if(enemy.cooldown > 0){
+        player.combo ++;
+        enemy.knockback = true;
+      }
+      if(player.combo >= 5){
+        enemy.health -= player.strength + 5;
+        enemy.y += 200;
+        enemy.dead();
+        player.combo = 0;
+      }
     }
     if(player.y < enemy.y && player.y > enemy.y - 100 && player.x > enemy.x + 50 && player.x < enemy.x + 70){
       enemy.health -= player.strength + 3;
@@ -255,6 +276,18 @@ function hitDetect(){
   if(player.facing == "left" && enemy.alive){
     if(player.y > enemy.y && player.y < enemy.y + 100 && player.x < enemy.x + 50){
         enemy.health -= player.strength;
+        enemy.y -= 5;
+        enemy.cooldown = hitCool;
+        if(enemy.cooldown > 0){
+          player.combo ++;
+          enemy.knockback = true;
+        }
+        if(player.combo >= 5){
+          enemy.health -= player.strength + 5;
+          enemy.y -= 200;
+          enemmy.dead();
+          player.combo = 0;
+        }
     }
     if(player.y > enemy.y && player.y < enemy.y + 100 && player.x > enemy.x + 50 && player.x < enemy.x + 70){
       enemy.health -= player.strength + 3;
@@ -275,6 +308,43 @@ function enemyMove(){
       enemy.moveCool = 0;
     }
   }
+  // enemy hit and combo
+  if(enemy.facing == "right" && player.alive && enemy.attack && !(enemy.knockback)){
+    if(enemy.y < player.y && enemy.y > player.y - 100 && enemy.x < player.x + 50){
+      player.health -= enemy.strength;
+      player.y += 5;
+      player.cooldown = hitCool;
+      if(player.cooldown > 0){
+        enemy.combo ++;
+      }
+      if(enemy.combo >= 5){
+        player.health -= enemy.strength + 5;
+        player.y += 200;
+        enemy.combo = 0;
+      }
+    }
+      if(enemy.y < player.y && enemy.y > player.y - 100 && enemy.x > player.x + 50 && enemy.x < player.x + 70){
+        player.health -= enemy.strength + 3;
+      }
+  }
+  if(enemy.facing == "left" && player.alive && enemy.attack && !(enemy.knockback)){
+    if(enemy.y > player.y && enemy.y < player.y + 100 && enemy.x < player.x + 50){
+        player.health -= enemy.strength;
+        player.y -= 5;
+        player.cooldown = hitCool;
+        if(player.cooldown > 0){
+          enemy.combo ++;
+        }
+        if(enemy.combo >= 5){
+          player.health -= enemy.strength + 5;
+          player.y -= 200;
+          enemy.combo = 0;
+        }
+    }
+    if(enemy.y > player.y && enemy.y < player.y + 100 && enemy.x > player.x + 50 && enemy.x < player.x + 70){
+      player.health -= enemy.strength + 3;
+    }
+  }
   
   if(enemy.y < player.y - 80 && enemy.alive){
     enemy.y += 2;
@@ -291,6 +361,14 @@ function enemyMove(){
   
   if(enemy.y > player.y - 80 && enemy.y < player.y + 80){
     enemy.moveIdx = 0;
+    if(enemyAttackCool > 0){
+      enemyAttackCool --;
+    }
+    else if(enemyAttackCool <= 0 && !(enemy.knockback)){
+      enemy.attack = true;
+      enemy.startAttack();
+      enemyAttackCool = 20;
+    }
   }
 }
 
@@ -304,9 +382,14 @@ function drawCharacter(){
     enemy.dead();
   }
   
-  player.update();
-  player.startJump();
-  player.startAttack();
+  if(player.alive){
+    player.update();
+    player.startJump();
+    player.startAttack();
+  }
+  else{
+    player.dead();
+  }
   
   if(player.y > enemy.y){
     player.facing = "left";
@@ -345,9 +428,43 @@ function drawCharacter(){
     }
   }
   
+  if(player.y < -20){
+    player.y = 0;
+  }
+  if(player.y > windowWidth + 222){
+    player.y = windowWidth + 210;
+  }
+  
+  if(enemy.y < -20){
+    enemy.y = 0;
+  }
+  if(enemy.y > windowWidth + 222){
+    enemy.y = windowWidth + 210;
+  }
+  
   if(enemy.health <= 0){
     enemy.alive = false;
     enemy.health = 0;
+  }
+  if(player.health <= 0){
+    player.alive = false;
+    player.health = 0;
+  }
+  // enemy cooldowm
+  if(enemy.cooldown > 0){
+    enemy.cooldown --;
+  }
+  if(enemy.cooldown <= 0){
+    player.combo = 0;
+    enemy.knockback = false;
+  }
+  // player cooldown
+  if(player.cooldown > 0){
+    player.cooldown --;
+  }
+  if(player.cooldown <= 0){
+    enemy.combo = 0;
+    player.knockback = false;
   }
 }
 
@@ -441,13 +558,13 @@ function drawBackground(){
   ctx.save();
   //ctx.fillRect(0, 457, 75, 50);
   jumpBtn.src = "streetfighter-asset/image/movebutton.png";
-  ctx.drawImage(jumpBtn, 0, windowHeight - 348, 75, 300);
+  ctx.drawImage(jumpBtn, 0, 320, 75, 300);
   ctx.restore();
   
   ctx.save();
   //ctx.fillRect(0, 525, 70, 67);
   attackBtn.src = "streetfighter-asset/image/attackbutton.png";
-  ctx.drawImage(attackBtn, -35, windowHeight - 270, 150, 300);
+  ctx.drawImage(attackBtn, -35, 398, 150, 300);
   ctx.restore();
 }
 
@@ -460,7 +577,9 @@ function mainLoop(){
       drawBackground();
       drawCharacter();
       drawPanel();
-      enemyMove();
+      if(player.alive){
+        enemyMove();
+      }
   }
 }
 
