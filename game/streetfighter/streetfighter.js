@@ -203,12 +203,19 @@ const pauseBtn = new Image();
 let moveLeft = false;
 let moveRight = false;
 
+// pause button sections
+let restartSec = false;
+let leaveSec = false;
+
 // characters
-let player = new Fighter("rick_de_silva", "Rick de Silva", 2, "right", 260, 70);
-let enemy = new Fighter("mike_tyson", "Mike Tyson", 2, "left", 260, 300);
+let player = new Fighter("mike_tyson", "Mike Tyson", 5, "right", 260, 70);
+let enemy = new Fighter("rick_de_silva", "Rick de Silva", 1, "left", 260, 300);
 
 // system
 let system = "gameplay";
+
+// sounds
+let mainGameSound = new Audio("streetfighter-asset/sound/in_game_music.ogg");
 
 const degree = function(setDeg){
   return setDeg * Math.PI / 180;
@@ -219,6 +226,10 @@ const drawRect = function(color, x, y, dx, dy){
   ctx.fillRect(x, y, dx, dy);
   ctx.restore();
 }
+const playSound = function(sound){
+  let audio = new Audio(sound);
+  audio.play();
+}
 
 function touCheck(){
   canvas.addEventListener("touchstart", e => {
@@ -226,26 +237,53 @@ function touCheck(){
       let x = touch.pageX;
       let y = touch.pageY;
       
-      // right button
-      if(x > 10 && x < 10 + 55 && y > 125 && y < 125 + 90){
-        moveRight = true;
+      if(system == "gameplay"){
+        // right button
+        if(x > 10 && x < 10 + 55 && y > 125 && y < 125 + 90){
+          moveRight = true;
+        }
+        // left button
+        if(x > 10 && x < 10 + 55 && y > 25 && y < 25 + 90){
+          moveLeft = true;
+        }
+        // jump button
+        if(x > 0 && x < 75 && y > 457 && y < 457 + 50 && player.gravity == "land"){
+          player.gravity = "up";
+        }
+        // attack button
+        if(x > 0 && x < 70 && y > 525 && y < 525 + 67 && !(player.knockback)){
+          player.attack = true;
+          hitDetect();
+        }
+        // pause button
+        if(x > 318 && x < 318 + 40 && y > 314 && y < 314 + 40){
+          system = "pauseMenu";
+        }
       }
-      // left button
-      if(x > 10 && x < 10 + 55 && y > 25 && y < 25 + 90){
-        moveLeft = true;
-      }
-      // jump button
-      if(x > 0 && x < 75 && y > 457 && y < 457 + 50 && player.gravity == "land"){
-        player.gravity = "up";
-      }
-      // attack button
-      if(x > 0 && x < 70 && y > 525 && y < 525 + 67 && !(player.knockback)){
-        player.attack = true;
-        hitDetect();
-      }
-      // pause button
-      if(x > 318 && x < 318 + 40 && y > 314 && y < 314 + 40){
-        alert("you pressed pause button");
+      
+      if(system == "pauseMenu"){
+        if(x > 260 && x < 260 + 40 && y > 490 && y < 490 + 60 && !(restartSec) && !(leaveSec)){
+          system = "gameplay";
+        }
+        else if(x > 185 && x < 185 + 50 && y > 180 && y < 180 + 310 && !(restartSec) && !(leaveSec)){
+          restartSec = true;
+        }
+        /*else if(x > 135 && x < 185 + 50 && y > 180 && y < 180 + 310 && !(restartSec) && !(leaveSec)){
+          leaveSec = true;
+        }*/
+        else if(x > 160 && x < 160 + 70 && y > 255 && y < 255 + 150 && restartSec){
+          restartSec = false;
+        }
+        else if(x > 115 && x < 115 + 35 && y > 280 && y < 280 + 95 && restartSec){
+          player.y = 70;
+          enemy.y = 300;
+          player.health = 100;
+          enemy.health = 100;
+          player.alive = true;
+          enemy.alive = true;
+          restartSec = false;
+          system = "gameplay";
+        }
       }
     });
   });
@@ -258,6 +296,35 @@ function touCheck(){
   });
 }
 
+function pauseMenu(){
+  ctx.save();
+  let img = new Image();
+  img.src = "streetfighter-asset/image/pausepanel.png";
+  ctx.drawImage(img, 100, 70, 200, 500);
+  //ctx.strokeRect(260, 490, 40, 60);
+  //ctx.strokeRect(185, 180, 50, 310);
+  //ctx.strokeRect(135, 180, 50, 310);
+  ctx.restore();
+  
+  if(restartSec){
+    ctx.save();
+    let img = new Image();
+    img.src = "streetfighter-asset/image/surepanel.png";
+    ctx.drawImage(img, 50, -20, 300, 700);
+    //ctx.strokeRect(160, 255, 70, 150);
+    //ctx.strokeRect(115, 280, 35, 95);
+    ctx.restore();
+  }
+  
+  if(leaveSec){
+    ctx.save();
+    let img = new Image();
+    img.src = "streetfighter-asset/image/surepanel.png";
+    ctx.drawImage(img, 50, -20, 300, 700);
+    ctx.restore();
+  }
+}
+
 function hitDetect(){
   // player hit and combo
   if(player.facing == "right" && enemy.alive){
@@ -265,6 +332,7 @@ function hitDetect(){
       enemy.health -= player.strength;
       enemy.y += 5;
       enemy.cooldown = hitCool;
+      playSound("streetfighter-asset/sound/punch_sound.ogg");
       if(enemy.cooldown > 0){
         player.combo ++;
         enemy.knockback = true;
@@ -279,6 +347,7 @@ function hitDetect(){
     }
     if(player.y < enemy.y && player.y > enemy.y - 100 && player.x > enemy.x + 50 && player.x < enemy.x + 70){
       enemy.health -= player.strength + 3;
+      playSound("streetfighter-asset/sound/punch_sound.ogg");
     }
   }
   if(player.facing == "left" && enemy.alive){
@@ -286,6 +355,7 @@ function hitDetect(){
         enemy.health -= player.strength;
         enemy.y -= 5;
         enemy.cooldown = hitCool;
+        playSound("streetfighter-asset/sound/punch_sound.ogg");
         if(enemy.cooldown > 0){
           player.combo ++;
           enemy.knockback = true;
@@ -300,6 +370,7 @@ function hitDetect(){
     }
     if(player.y > enemy.y && player.y < enemy.y + 100 && player.x > enemy.x + 50 && player.x < enemy.x + 70){
       enemy.health -= player.strength + 3;
+      playSound("streetfighter-asset/sound/punch_sound.ogg");
     }
   }
 }
@@ -323,6 +394,7 @@ function enemyMove(){
       player.health -= enemy.strength;
       player.y += 5;
       player.cooldown = hitCool;
+      playSound("streetfighter-asset/sound/punch_sound.ogg");
       if(player.cooldown > 0){
         enemy.combo ++;
         player.knockback = true;
@@ -336,6 +408,7 @@ function enemyMove(){
     }
       if(enemy.y < player.y && enemy.y > player.y - 100 && enemy.x > player.x + 50 && enemy.x < player.x + 70){
         player.health -= enemy.strength + 3;
+        playSound("streetfighter-asset/sound/punch_sound.ogg");
       }
   }
   if(enemy.facing == "left" && player.alive && enemy.attack && !(enemy.knockback) && enemy.alive){
@@ -343,6 +416,7 @@ function enemyMove(){
         player.health -= enemy.strength;
         player.y -= 5;
         player.cooldown = hitCool;
+        playSound("streetfighter-asset/sound/punch_sound.ogg");
         if(player.cooldown > 0){
           enemy.combo ++;
           player.knockback = true;
@@ -356,6 +430,7 @@ function enemyMove(){
     }
     if(enemy.y > player.y && enemy.y < player.y + 100 && enemy.x > player.x + 50 && enemy.x < player.x + 70){
       player.health -= enemy.strength + 3;
+      playSound("streetfighter-asset/sound/punch_sound.ogg");
     }
   }
   
@@ -619,12 +694,25 @@ function mainLoop(){
       if(player.alive){
         enemyMove();
       }
+      if(!(mainGameSound.play())){
+        mainGameSound.loop = true;
+        mainGameSound.play();
+      }
+      break
+    
+    case "pauseMenu":
+      drawBackground();
+      drawCharacter();
+      drawPanel();
+      pauseMenu();
+      break
   }
 }
 
 switch(system){
   case "gameplay":
     touCheck();
+    break
 }
 
 mainLoop();
