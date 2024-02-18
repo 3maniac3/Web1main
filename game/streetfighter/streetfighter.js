@@ -190,12 +190,15 @@ let hitCool = 50;
 
 // for the enemy
 let enemyAttackCool = 20;
+let enemyJumpPro = 0;
+let enemyJumpAuto = false;
 
 // buttons
 const leftBtn = new Image();
 const rightBtn = new Image();
 const jumpBtn = new Image();
 const attackBtn = new Image();
+const pauseBtn = new Image();
 
 let moveLeft = false;
 let moveRight = false;
@@ -236,9 +239,13 @@ function touCheck(){
         player.gravity = "up";
       }
       // attack button
-      if(x > 0 && x < 70 && y > 525 && y < 525 + 67){
+      if(x > 0 && x < 70 && y > 525 && y < 525 + 67 && !(player.knockback)){
         player.attack = true;
         hitDetect();
+      }
+      // pause button
+      if(x > 318 && x < 318 + 40 && y > 314 && y < 314 + 40){
+        alert("you pressed pause button");
       }
     });
   });
@@ -263,10 +270,11 @@ function hitDetect(){
         enemy.knockback = true;
       }
       if(player.combo >= 5){
-        enemy.health -= player.strength + 5;
+        enemy.health -= player.strength + 3;
         enemy.y += 200;
         enemy.dead();
         player.combo = 0;
+        enemy.knockback = false;
       }
     }
     if(player.y < enemy.y && player.y > enemy.y - 100 && player.x > enemy.x + 50 && player.x < enemy.x + 70){
@@ -283,10 +291,11 @@ function hitDetect(){
           enemy.knockback = true;
         }
         if(player.combo >= 5){
-          enemy.health -= player.strength + 5;
+          enemy.health -= player.strength + 3;
           enemy.y -= 200;
-          enemmy.dead();
+          enemy.dead();
           player.combo = 0;
+          enemy.knockback = false;
         }
     }
     if(player.y > enemy.y && player.y < enemy.y + 100 && player.x > enemy.x + 50 && player.x < enemy.x + 70){
@@ -309,36 +318,40 @@ function enemyMove(){
     }
   }
   // enemy hit and combo
-  if(enemy.facing == "right" && player.alive && enemy.attack && !(enemy.knockback)){
+  if(enemy.facing == "right" && player.alive && enemy.attack && !(enemy.knockback) && enemy.alive){
     if(enemy.y < player.y && enemy.y > player.y - 100 && enemy.x < player.x + 50){
       player.health -= enemy.strength;
       player.y += 5;
       player.cooldown = hitCool;
       if(player.cooldown > 0){
         enemy.combo ++;
+        player.knockback = true;
       }
-      if(enemy.combo >= 5){
-        player.health -= enemy.strength + 5;
+      if(enemy.combo >= 15){
+        player.health -= enemy.strength + 3;
         player.y += 200;
         enemy.combo = 0;
+        player.knockback = false;
       }
     }
       if(enemy.y < player.y && enemy.y > player.y - 100 && enemy.x > player.x + 50 && enemy.x < player.x + 70){
         player.health -= enemy.strength + 3;
       }
   }
-  if(enemy.facing == "left" && player.alive && enemy.attack && !(enemy.knockback)){
+  if(enemy.facing == "left" && player.alive && enemy.attack && !(enemy.knockback) && enemy.alive){
     if(enemy.y > player.y && enemy.y < player.y + 100 && enemy.x < player.x + 50){
         player.health -= enemy.strength;
         player.y -= 5;
         player.cooldown = hitCool;
         if(player.cooldown > 0){
           enemy.combo ++;
+          player.knockback = true;
         }
-        if(enemy.combo >= 5){
-          player.health -= enemy.strength + 5;
+        if(enemy.combo >= 15){
+          player.health -= enemy.strength + 3;
           player.y -= 200;
           enemy.combo = 0;
+          player.knockback = false;
         }
     }
     if(enemy.y > player.y && enemy.y < player.y + 100 && enemy.x > player.x + 50 && enemy.x < player.x + 70){
@@ -359,8 +372,15 @@ function enemyMove(){
     }
   }
   
-  if(enemy.y > player.y - 80 && enemy.y < player.y + 80){
+  if(enemy.y > player.y - 90 && enemy.y < player.y + 90 && enemy.alive){
     enemy.moveIdx = 0;
+    if(!(enemyJumpAuto)){
+      enemyJumpAuto = true;
+      enemyJumpPro = Math.floor(Math.random() * (3 - 0) + 0);
+      if(enemyJumpPro == 2 && enemy.gravity == "land"){
+        enemy.gravity = "up";
+      }
+    }
     if(enemyAttackCool > 0){
       enemyAttackCool --;
     }
@@ -369,6 +389,9 @@ function enemyMove(){
       enemy.startAttack();
       enemyAttackCool = 20;
     }
+  }
+  else{
+    enemyJumpAuto = false;
   }
 }
 
@@ -392,12 +415,20 @@ function drawCharacter(){
   }
   
   if(player.y > enemy.y){
-    player.facing = "left";
-    enemy.facing = "right";
+    if(player.alive){
+      player.facing = "left";
+    }
+    if(enemy.alive){
+      enemy.facing = "right";
+    }
   }
   else{
-    player.facing = "right";
-    enemy.facing = "left";
+    if(player.alive){
+      player.facing = "right";
+    }
+    if(enemy.alive){
+      enemy.facing = "left";
+    }
   }
   
   if(moveLeft && !(player.y < -18)){
@@ -442,11 +473,11 @@ function drawCharacter(){
     enemy.y = windowWidth + 210;
   }
   
-  if(enemy.health <= 0){
+  if(enemy.health <= 0 && enemy.x == 260){
     enemy.alive = false;
     enemy.health = 0;
   }
-  if(player.health <= 0){
+  if(player.health <= 0 && player.x == 260){
     player.alive = false;
     player.health = 0;
   }
@@ -565,6 +596,14 @@ function drawBackground(){
   //ctx.fillRect(0, 525, 70, 67);
   attackBtn.src = "streetfighter-asset/image/attackbutton.png";
   ctx.drawImage(attackBtn, -35, 398, 150, 300);
+  ctx.restore();
+  
+  ctx.save();
+  //ctx.fillRect(318, 314, 40, 40);
+  pauseBtn.src = "streetfighter-asset/image/pausebutton.png";
+  ctx.translate(420, 275);
+  ctx.rotate(degree(90));
+  ctx.drawImage(pauseBtn, 0, 0, 120, 150);
   ctx.restore();
 }
 
