@@ -208,14 +208,15 @@ let restartSec = false;
 let leaveSec = false;
 
 // characters
-let player = new Fighter("mike_tyson", "Mike Tyson", 5, "right", 260, 70);
-let enemy = new Fighter("rick_de_silva", "Rick de Silva", 1, "left", 260, 300);
+let player = new Fighter("steve", "Steve", 10, "right", 260, 70);
+let enemy = new Fighter("the_purple_guy", "The Purple Guy", 1, "left", 260, 300);
 
 // system
 let system = "gameplay";
 
 // sounds
 let mainGameSound = new Audio("streetfighter-asset/sound/in_game_music.ogg");
+let gameSound = true;
 
 const degree = function(setDeg){
   return setDeg * Math.PI / 180;
@@ -323,6 +324,15 @@ function pauseMenu(){
     ctx.drawImage(img, 50, -20, 300, 700);
     ctx.restore();
   }
+}
+
+function winDetect(){
+  gameSound = 1;
+  playSound("streetfighter-asset/sound/punch_sound.ogg");
+  
+  //setTimeout(function(){
+    //alert("test");
+  //}, 3000);
 }
 
 function hitDetect(){
@@ -478,6 +488,13 @@ function drawCharacter(){
   }
   else{
     enemy.dead();
+    gameSound = false;
+    mainGameSound.loop = false;
+    mainGameSound.pause();
+    mainGameSound.currentTime = 100;
+    if(!(gameSound)){
+      winDetect();
+    }
   }
   
   if(player.alive){
@@ -487,6 +504,11 @@ function drawCharacter(){
   }
   else{
     player.dead();
+    gameSound = false;
+    mainGameSound.loop = false;
+    mainGameSound.pause();
+    mainGameSound.currentTime = 100;
+    winDetect();
   }
   
   if(player.y > enemy.y){
@@ -694,8 +716,8 @@ function mainLoop(){
       if(player.alive){
         enemyMove();
       }
-      if(!(mainGameSound.play())){
-        mainGameSound.loop = true;
+      if(!(mainGameSound.play()) && gameSound){
+        //mainGameSound.loop = true;
         mainGameSound.play();
       }
       break
