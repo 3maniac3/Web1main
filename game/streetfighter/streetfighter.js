@@ -488,13 +488,13 @@ function drawCharacter(){
   }
   else{
     enemy.dead();
-    gameSound = false;
+    /*gameSound = false;
     mainGameSound.loop = false;
     mainGameSound.pause();
     mainGameSound.currentTime = 100;
     if(!(gameSound)){
       winDetect();
-    }
+    }*/
   }
   
   if(player.alive){
@@ -504,11 +504,11 @@ function drawCharacter(){
   }
   else{
     player.dead();
-    gameSound = false;
+    /*gameSound = false;
     mainGameSound.loop = false;
     mainGameSound.pause();
     mainGameSound.currentTime = 100;
-    winDetect();
+    winDetect();*/
   }
   
   if(player.y > enemy.y){
