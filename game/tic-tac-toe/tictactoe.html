@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <title>Berklau | Tic Tac Toe</title>
+  <link rel="stylesheet" href="tictactoe.css">
+  <style>
+    body{
+      margin: 0px;
+      overflow: hidden;
+      overscroll-behavior-y: contain;
+      overscroll-behavior-x: contain;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="title" style="text-align:center; font-size:3rem; margin-top:30%; display:none">Tic-Tac-Toe</h1>
+  <div class="box" id="mainMenuContainer">
+    <h1>Main Menu</h1>
+    <button id="createRoomBtn">Create Room</button><br>
+    <button id="joinRoomBtn">Join Room</button>
+    
+  </div>
+  <div class="box" id="createRoomContainer">
+    <h1>Create Room</h1>
+    <h2>Room ID:</h2>
+    <h3 id="roomIdDisplay">00000</h3>
+    <button id="generateNewId">Generate</button><br>
+    <button id="createBtn">Create</button>
+    <br>
+    <button id="exitBtn2">Back</button>
+  </div>
+  <div class="box" id="joinRoomContainer">
+    <h1>Enter Room ID</h1>
+    <input id ="roomInput" type="number">
+    <br>
+    <button id="joinBtn">Join</button><br>
+    <button id="exitBtn1">Back</button>
+  </div>
+  <div class="box" id="createUsernameContainer">
+    <h2>Enter Username:</h2>
+    <input id="createUsernameInput" type="text"><br>
+    <button id="playBtn">Play</button>
+  </div>
+  <div class="box" id="joinUsernameContainer">
+    <h2>Enter Username:</h2>
+    <input id="joinUsernameInput" type="text"><br>
+    <button id="joinPlayBtn">Play</button>
+  </div>
+  <div id="gameplayContainer">
+    <div id="tttContainer">
+      <h2 id="whoTurns"></h2>
+      <p id="box0"></p>
+      <p id="box1"></p>
+      <p id="box2"></p>
+      
+      <p id="box3"></p>
+      <p id="box4"></p>
+      <p id="box5"></p>
+      
+      <p id="box6"></p>
+      <p id="box7"></p>
+      <p id="box8"></p>
+    </div>
+    <h3 class="panel" id="youPanel"></h3>
+    <h3 class="panel" id="elsePanel"></h3>
+  </div>
+  <h1 id="notifPanel" style="text-align:center"></h1>
+  
+  <script type="module">
+    import {initializeApp} from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import {getDatabase, ref, set, update, onValue} from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyCCnPgcLCOe3dZBpNua5fC8W0b2mLEgiiM",
+      authDomain: "tic-tac-toe-d14c0.firebaseapp.com",
+      databaseURL: "https://tic-tac-toe-d14c0-default-rtdb.firebaseio.com",
+      projectId: "tic-tac-toe-d14c0",
+      storageBucket: "tic-tac-toe-d14c0.appspot.com",
+      messagingSenderId: "207903650897",
+      appId: "1:207903650897:web:eeaafc332bc5748cc0f470"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    
+    const db = getDatabase(app);
+    
+    // -- main code --
+    // main menu container 
+    const notifPanel = document.getElementById("notifPanel");
+    const createRoomBtn = document.getElementById("createRoomBtn");
+    const generateBtn = document.getElementById("generateNewId");
+    const createBtn = document.getElementById("createBtn");
+    const playBtn = document.getElementById("playBtn");
+    
+    const joinRoomBtn = document.getElementById("joinRoomBtn");
+    const joinBtn = document.getElementById("joinBtn");
+    let player = 1;
+    let roomid = 13333;
+    let generateRoomId = "0123456789";
+    
+    // tic tac toe boxes
+    const box0 = document.getElementById("box0");
+    const box1 = document.getElementById("box1");
+    const box2 = document.getElementById("box2");
+    
+    const box3 = document.getElementById("box3");
+    const box4 = document.getElementById("box4");
+    const box5 = document.getElementById("box5");
+    
+    const box6 = document.getElementById("box6");
+    const box7 = document.getElementById("box7");
+    const box8 = document.getElementById("box8");
+    
+    const whoTurns = document.getElementById("whoTurns");
+    const youPanel = document.getElementById("youPanel");
+    const elsePanel = document.getElementById("elsePanel");
+    
+    const map = [
+      "", "", "",
+      "", "", "",
+      "", "", ""
+      ];
+    
+    createRoomBtn.addEventListener("click", () => {
+      document.getElementById("mainMenuContainer").style.display = "none";
+      document.getElementById("createRoomContainer").style.display = "block";
+      
+      let newId = "";
+      for(let i = 0; i < 5; i ++){
+        newId += generateRoomId[Math.floor(Math.random() * (5 - 0) + 0)];
+      }
+      roomid = newId;
+      document.getElementById("roomIdDisplay").textContent = roomid;
+    });
+    generateBtn.addEventListener("click", () => {
+      let newId = "";
+      for(let i = 0; i < 5; i ++){
+        newId += generateRoomId[Math.floor(Math.random() * (5 - 0) + 0)];
+      }
+      roomid = newId;
+      document.getElementById("roomIdDisplay").textContent = roomid;
+    });
+    createBtn.addEventListener("click", () => {
+      document.getElementById("createRoomContainer").style.display = "none";
+      document.getElementById("createUsernameContainer").style.display = "block";
+    });
+    playBtn.addEventListener("click", () => {
+      set(ref(db, `server/room-${roomid}`), {
+        playerturn: "player1",
+        tttbox: [
+          "", "", "",
+          "", "", "",
+          "", "", ""
+          ]
+      });
+      set(ref(db, `server/room-${roomid}/player1`), {
+        username: document.getElementById("createUsernameInput").value,
+        turn: "X"
+      });
+      player = 1;
+      alert("success!");
+    });
+    
+    joinRoomBtn.addEventListener("click", () => {
+      document.getElementById("mainMenuContainer").style.display = "none";
+      document.getElementById("joinRoomContainer").style.display = "block";
+    });
+    joinPlayBtn.addEventListener("click", () => {
+      update(ref(db, `server/room-${roomid}/player2`), {
+        username: document.getElementById("joinUsernameInput").value
+      });
+    });
+    joinBtn.addEventListener("click", () => {
+      roomid = document.getElementById("roomInput").value;
+      onValue(ref(db, `server/room-${roomid}`), (snap) => {
+        if(snap.exists()){
+          onValue(ref(db, `server/room-${roomid}/player2`), (ss) => {
+            if(ss.exists()){
+              notifPanel.style.color = "red";
+              notifPanel.textContent = "Room is Full!";
+              setTimeout(function(){
+                notifPanel.textContent = "";
+              }, 3000);
+            } else{
+              set(ref(db, `server/room-${roomid}/player2`), {
+                username: "",
+                turn: "O"
+              });
+              player = 2;
+              document.getElementById("joinRoomContainer").style.display = "none";
+              document.getElementById("joinUsernameContainer").style.display = "block";
+              notifPanel.style.color = "green";
+              notifPanel.textContent = "Joined!";
+              setTimeout(function(){
+              notifPanel.textContent = "";
+          }, 3000);
+            }
+          });
+        } else{
+          notifPanel.style.color = "red";
+          notifPanel.textContent = "Room not Found!";
+          setTimeout(function(){
+            notifPanel.textContent = "";
+          }, 3000);
+        }
+      });
+    });
+    
+    document.getElementById("exitBtn1").addEventListener("click", () => {
+      document.getElementById("joinRoomContainer").style.display = "none";
+      document.getElementById("mainMenuContainer").style.display = "block";
+    });
+    document.getElementById("exitBtn2").addEventListener("click", () => {
+      document.getElementById("createRoomContainer").style.display = "none";
+      document.getElementById("mainMenuContainer").style.display = "block";
+    });
+    
+    function dataUpdate(){
+      update(ref(db, `server/room-${roomid}`), {
+        tttbox: map
+      });
+    }
+    
+    box0.addEventListener("click", () => {
+      onValue(ref(db, `server/room-${roomid}`), (ss) => {
+        if(ss.val().playerturn == `player${player}` && box0.textContent == ""){
+          onValue(ref(db, `server/room-${roomid}/player${player}`), (snap) => {
+            map[0] = `${snap.val().turn}`;
+            box0.textContent = `${snap.val().turn}`;
+            dataUpdate();
+          });
+        }
+      });
+    });
+    box1.addEventListener("click", () => {
+      onValue(ref(db, `server/room-${roomid}`), (ss) => {
+        if(ss.val().playerturn == `player${player}` && box1.textContent == ""){
+          onValue(ref(db, `server/room-${roomid}/player${player}`), (snap) => {
+            map[1] = `${snap.val().turn}`;
+            box1.textContent = `${snap.val().turn}`;
+            dataUpdate();
+          });
+        }
+      });
+    });
+    box2.addEventListener("click", () => {
+      onValue(ref(db, `server/room-${roomid}`), (ss) => {
+        if(ss.val().playerturn == `player${player}` && box2.textContent == ""){
+          onValue(ref(db, `server/room-${roomid}/player${player}`), (snap) => {
+            map[2] = `${snap.val().turn}`;
+            box2.textContent = `${snap.val().turn}`;
+            dataUpdate();
+          });
+        }
+      });
+    });
+    
+    if(player == 1){
+      onValue(ref(db, `server/room-${roomid}/player1`), (ss) => {
+        if(ss.exists()){
+          whoTurns.textContent = `${ss.val().turn}'s turn`;
+          youPanel.textContent = `You: ${ss.val().username} (${ss.val().turn})`;
+          
+          onValue(ref(db, `server/room-${roomid}/player2`), (snap) => {
+            if(snap.exists()){
+              elsePanel.textContent = `Else: ${snap.val().username} (${snap.val().turn})`;
+            }
+          });
+        }
+      });
+    } else if(player == 2){
+      onValue(ref(db, `server/room-${roomid}/player2`), (ss) => {
+        if(ss.exists()){
+          whoTurns.textContent = `${ss.val().turn}'s turn`;
+          youPanel.textContent = `You: ${ss.val().username} (${ss.val().turn})`;
+          
+          onValue(ref(db, `server/room-${roomid}/player1`), (snap) => {
+            if(snap.exists()){
+              elsePanel.textContent = `Else: ${snap.val().username} (${snap.val().turn})`;
+            }
+          });
+        }
+      });
+    }
+    
+    function mainLoop(){
+      requestAnimationFrame(mainLoop);
+      
+      onValue(ref(db, `server/room-${roomid}`), (ss) => {
+        onValue(ref(db, `server/room-${roomid}/${ss.val().playerturn}`), (snap) => {
+          whoTurns.textContent = `${snap.val().turn}'s turn`;
+        });
+      });
+    }
+    
+    mainLoop();
+  </script>
+</body>
+</html>
