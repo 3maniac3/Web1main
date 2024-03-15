@@ -160,7 +160,10 @@
         turn: "X"
       });
       player = 1;
-      alert("success!");
+      document.getElementById("createUsernameInput").style.display = "none";
+      
+      notifPanel.style.color = "green";
+      notifPanel.textContent = "Searching for Else...";
     });
     
     joinRoomBtn.addEventListener("click", () => {
@@ -168,8 +171,9 @@
       document.getElementById("joinRoomContainer").style.display = "block";
     });
     joinPlayBtn.addEventListener("click", () => {
-      update(ref(db, `server/room-${roomid}/player2`), {
-        username: document.getElementById("joinUsernameInput").value
+      set(ref(db, `server/room-${roomid}/player2`), {
+        username: document.getElementById("joinUsernameInput").value,
+        turn: "O"
       });
     });
     joinBtn.addEventListener("click", () => {
@@ -184,10 +188,6 @@
                 notifPanel.textContent = "";
               }, 3000);
             } else{
-              set(ref(db, `server/room-${roomid}/player2`), {
-                username: "",
-                turn: "O"
-              });
               player = 2;
               document.getElementById("joinRoomContainer").style.display = "none";
               document.getElementById("joinUsernameContainer").style.display = "block";
@@ -257,36 +257,44 @@
       });
     });
     
-    if(player == 1){
-      onValue(ref(db, `server/room-${roomid}/player1`), (ss) => {
-        if(ss.exists()){
-          whoTurns.textContent = `${ss.val().turn}'s turn`;
-          youPanel.textContent = `You: ${ss.val().username} (${ss.val().turn})`;
-          
-          onValue(ref(db, `server/room-${roomid}/player2`), (snap) => {
-            if(snap.exists()){
-              elsePanel.textContent = `Else: ${snap.val().username} (${snap.val().turn})`;
-            }
-          });
-        }
-      });
-    } else if(player == 2){
-      onValue(ref(db, `server/room-${roomid}/player2`), (ss) => {
-        if(ss.exists()){
-          whoTurns.textContent = `${ss.val().turn}'s turn`;
-          youPanel.textContent = `You: ${ss.val().username} (${ss.val().turn})`;
-          
-          onValue(ref(db, `server/room-${roomid}/player1`), (snap) => {
-            if(snap.exists()){
-              elsePanel.textContent = `Else: ${snap.val().username} (${snap.val().turn})`;
-            }
-          });
-        }
-      });
+    function startGame(){
+      if(player == 1){
+        onValue(ref(db, `server/room-${roomid}/player1`), (ss) => {
+          if(ss.exists()){
+            whoTurns.textContent = `${ss.val().turn}'s turn`;
+            youPanel.textContent = `You: ${ss.val().username} (${ss.val().turn})`;
+            
+            onValue(ref(db, `server/room-${roomid}/player2`), (snap) => {
+              if(snap.exists()){
+                elsePanel.textContent = `Else: ${snap.val().username} (${snap.val().turn})`;
+              }
+            });
+          }
+        });
+      } else if(player == 2){
+        onValue(ref(db, `server/room-${roomid}/player2`), (ss) => {
+          if(ss.exists()){
+            whoTurns.textContent = `${ss.val().turn}'s turn`;
+            youPanel.textContent = `You: ${ss.val().username} (${ss.val().turn})`;
+            
+            onValue(ref(db, `server/room-${roomid}/player1`), (snap) => {
+              if(snap.exists()){
+                elsePanel.textContent = `Else: ${snap.val().username} (${snap.val().turn})`;
+              }
+            });
+          }
+        });
+      }
     }
     
     function mainLoop(){
       requestAnimationFrame(mainLoop);
+      
+      onValue(ref(db, `server/room-${roomid}/player2/`), (ss) => {
+        if(ss.exists()){
+          createUsernameContainer.style.display = "none";
+        }
+      });
       
       onValue(ref(db, `server/room-${roomid}`), (ss) => {
         onValue(ref(db, `server/room-${roomid}/${ss.val().playerturn}`), (snap) => {
