@@ -8,7 +8,7 @@
   text-align: center;
 }
 #mainMenuContainer{
-  display: none;
+  display: block;
 }
 #createRoomContainer{
   display: none;
@@ -23,6 +23,7 @@
   display: none;
 }
 #gameplayContainer{
+  display: none;
   width: 100vw;
   height: 100vh;
 }
@@ -85,6 +86,7 @@
 }
 
 #whoTurns{
+  display: none;
   position: absolute;
   left: 38%;
   top: -20%;
