@@ -311,8 +311,8 @@
       });
       
       for(let i = 0; i < map.length; i ++){
-        update(ref(db, `server/room-${roomid}`), {
-          tttbox[i]: map[i]
+        onValue(ref(db, `server/room-${roomid}`), (ss) => {
+          map[i] = ss.val().tttbox[i];
         });
       }
     }
