@@ -222,19 +222,19 @@
     });
     
     function dataUpdate(){
-      update(ref(db, `server/room-${roomid}/tttbox`), {
-        b0: map[0],
-        b1: map[1],
-        b2: map[2],
-        b3: map[3],
-        b4: map[4],
-        b5: map[5],
-        b6: map[6],
-        b7: map[7],
-        b8: map[8],
-      });
-      update(ref(db, `server/room-${roomid}`), {
-        playerturn: "player2"
+      onValue(ref(db, `server/room-${roomid}`), (ss) => {
+        let data = ss.val();
+        if(ss.exists()){
+          if(data.playerturn == "player1"){
+            update(ref(db, `server/room-${roomid}`), {
+              playerturn: "player2"
+            });
+          } else if(data.playerturn == "player2"){
+            update(ref(db, `server/room-${roomid}`), {
+              playerturn: "player1"
+            });
+          }
+        }
       });
     }
     
@@ -245,6 +245,9 @@
             map[0] = `${snap.val().turn}`;
             box0.textContent = `${snap.val().turn}`;
             dataUpdate();
+            update(ref(db, `server/room-${roomid}/tttbox`), {
+              b0: snap.val().turn
+            });
           });
         }
       });
@@ -256,6 +259,9 @@
             map[1] = `${snap.val().turn}`;
             box1.textContent = `${snap.val().turn}`;
             dataUpdate();
+            update(ref(db, `server/room-${roomid}/tttbox`), {
+              b1: snap.val().turn
+            });
           });
         }
       });
@@ -267,6 +273,9 @@
             map[2] = `${snap.val().turn}`;
             box2.textContent = `${snap.val().turn}`;
             dataUpdate();
+            update(ref(db, `server/room-${roomid}/tttbox`), {
+              b2: snap.val().turn
+            });
           });
         }
       });
@@ -278,6 +287,9 @@
             map[3] = `${snap.val().turn}`;
             box3.textContent = `${snap.val().turn}`;
             dataUpdate();
+            update(ref(db, `server/room-${roomid}/tttbox`), {
+              b3: snap.val().turn
+            });
           });
         }
       });
@@ -289,6 +301,9 @@
             map[4] = `${snap.val().turn}`;
             box4.textContent = `${snap.val().turn}`;
             dataUpdate();
+            update(ref(db, `server/room-${roomid}/tttbox`), {
+              b4: snap.val().turn
+            });
           });
         }
       });
@@ -300,6 +315,9 @@
             map[5] = `${snap.val().turn}`;
             box5.textContent = `${snap.val().turn}`;
             dataUpdate();
+            update(ref(db, `server/room-${roomid}/tttbox`), {
+              b5: snap.val().turn
+            });
           });
         }
       });
@@ -311,6 +329,9 @@
             map[6] = `${snap.val().turn}`;
             box6.textContent = `${snap.val().turn}`;
             dataUpdate();
+            update(ref(db, `server/room-${roomid}/tttbox`), {
+              b6: snap.val().turn
+            });
           });
         }
       });
@@ -322,6 +343,9 @@
             map[7] = `${snap.val().turn}`;
             box7.textContent = `${snap.val().turn}`;
             dataUpdate();
+            update(ref(db, `server/room-${roomid}/tttbox`), {
+              b7: snap.val().turn
+            });
           });
         }
       });
@@ -333,6 +357,9 @@
             map[8] = `${snap.val().turn}`;
             box8.textContent = `${snap.val().turn}`;
             dataUpdate();
+            update(ref(db, `server/room-${roomid}/tttbox`), {
+              b8: snap.val().turn
+            });
           });
         }
       });
