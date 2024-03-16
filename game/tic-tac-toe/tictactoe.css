@@ -26,7 +26,6 @@
   display: none;
   width: 100vw;
   height: 100vh;
-  border: 3px solid;
 }
 #gameplayContainer #tttContainer{
   position: relative;

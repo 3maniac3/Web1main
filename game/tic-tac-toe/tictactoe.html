@@ -309,6 +309,10 @@
           whoTurns.textContent = `${snap.val().turn}'s turn`;
         });
       });
+      
+      update(ref(db, `server/room-${roomid}`), {
+        tttbox: map
+      });
     }
     
     mainLoop();
