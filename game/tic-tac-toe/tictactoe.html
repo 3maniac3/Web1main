@@ -233,6 +233,9 @@
         b7: map[7],
         b8: map[8],
       });
+      update(ref(db, `server/room-${roomid}`), {
+        playerturn: "player2"
+      });
     }
     
     box0.addEventListener("click", () => {
