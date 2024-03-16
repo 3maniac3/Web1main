@@ -149,11 +149,11 @@
     playBtn.addEventListener("click", () => {
       set(ref(db, `server/room-${roomid}`), {
         playerturn: "player1",
-        tttbox: [
-          "", "", "",
-          "", "", "",
-          "", "", ""
-          ]
+        tttbox: {
+          b0: "", b1: "", b2: "",
+          b3: "", b4: "", b5: "",
+          b6: "", b7: "", b8: ""
+        }
       });
       set(ref(db, `server/room-${roomid}/player1`), {
         username: document.getElementById("createUsernameInput").value,
@@ -222,8 +222,16 @@
     });
     
     function dataUpdate(){
-      update(ref(db, `server/room-${roomid}`), {
-        tttbox: map
+      update(ref(db, `server/room-${roomid}/tttbox`), {
+        b0: map[0],
+        b1: map[1],
+        b2: map[2],
+        b3: map[3],
+        b4: map[4],
+        b5: map[5],
+        b6: map[6],
+        b7: map[7],
+        b8: map[8],
       });
     }
     
@@ -310,11 +318,9 @@
         });
       });
       
-      for(let i = 0; i < map.length; i ++){
-        onValue(ref(db, `server/room-${roomid}`), (ss) => {
-          map[i] = ss.val().tttbox[i];
-        });
-      }
+      onValue(ref(db, `server/room-${roomid}/tttbox`), (ss) => {
+        map[0] = ss.val().b0;
+      });
     }
     
     mainLoop();
