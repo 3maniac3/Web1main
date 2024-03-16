@@ -65,7 +65,7 @@
     <h3 class="panel" id="youPanel"></h3>
     <h3 class="panel" id="elsePanel"></h3>
   </div>
-  <h1 id="notifPanel" style="text-align:center"></h1>
+  <h1 id="infoPanel" style="text-align:center"></h1>
   
   <script type="module">
     import {initializeApp} from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
@@ -88,7 +88,7 @@
     
     // -- main code --
     // main menu container 
-    const notifPanel = document.getElementById("notifPanel");
+    const infoPanel = document.getElementById("infoPanel");
     const createRoomBtn = document.getElementById("createRoomBtn");
     const generateBtn = document.getElementById("generateNewId");
     const createBtn = document.getElementById("createBtn");
@@ -137,7 +137,7 @@
     generateBtn.addEventListener("click", () => {
       let newId = "";
       for(let i = 0; i < 5; i ++){
-        newId += generateRoomId[Math.floor(Math.random() * (5 - 0) + 0)];
+        newId += generateRoomId[Math.floor(Math.random() * (10 - 0) + 0)];
       }
       roomid = newId;
       document.getElementById("roomIdDisplay").textContent = roomid;
@@ -162,8 +162,8 @@
       player = 1;
       document.getElementById("createUsernameInput").style.display = "none";
       
-      notifPanel.style.color = "green";
-      notifPanel.textContent = "Searching for Else...";
+      infoPanel.style.color = "green";
+      infoPanel.textContent = "Searching for Else...";
     });
     
     joinRoomBtn.addEventListener("click", () => {
@@ -175,6 +175,10 @@
         username: document.getElementById("joinUsernameInput").value,
         turn: "O"
       });
+      document.getElementById("title").style.display = "none";
+      document.getElementById("joinUsernameContainer").style.display = "none";
+      document.getElementById("gameplayContainer").style.display = "block";
+      startGame();
     });
     joinBtn.addEventListener("click", () => {
       roomid = document.getElementById("roomInput").value;
@@ -182,27 +186,27 @@
         if(snap.exists()){
           onValue(ref(db, `server/room-${roomid}/player2`), (ss) => {
             if(ss.exists()){
-              notifPanel.style.color = "red";
-              notifPanel.textContent = "Room is Full!";
+              infoPanel.style.color = "red";
+              infoPanel.textContent = "Room is Full!";
               setTimeout(function(){
-                notifPanel.textContent = "";
+                infoPanel.textContent = "";
               }, 3000);
             } else{
               player = 2;
               document.getElementById("joinRoomContainer").style.display = "none";
               document.getElementById("joinUsernameContainer").style.display = "block";
-              notifPanel.style.color = "green";
-              notifPanel.textContent = "Joined!";
+              infoPanel.style.color = "green";
+              infoPanel.textContent = "Joined!";
               setTimeout(function(){
-              notifPanel.textContent = "";
+              infoPanel.textContent = "";
           }, 3000);
             }
           });
         } else{
-          notifPanel.style.color = "red";
-          notifPanel.textContent = "Room not Found!";
+          infoPanel.style.color = "red";
+          infoPanel.textContent = "Room not Found!";
           setTimeout(function(){
-            notifPanel.textContent = "";
+            infoPanel.textContent = "";
           }, 3000);
         }
       });
@@ -292,7 +296,11 @@
       
       onValue(ref(db, `server/room-${roomid}/player2/`), (ss) => {
         if(ss.exists()){
+          document.getElementById("title").style.display = "none";
           createUsernameContainer.style.display = "none";
+          infoPanel.style.display = "none";
+          document.getElementById("gameplayContainer").style.display = "block";
+          startGame();
         }
       });
       
