@@ -319,7 +319,7 @@
       });
       
       onValue(ref(db, `server/room-${roomid}/tttbox`), (ss) => {
-        map[0] = ss.val().b0;
+        map[0].textContent = ss.val().b0;
       });
     }
     
