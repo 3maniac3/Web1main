@@ -268,6 +268,72 @@
         }
       });
     });
+    box3.addEventListener("click", () => {
+      onValue(ref(db, `server/room-${roomid}`), (ss) => {
+        if(ss.val().playerturn == `player${player}` && box3.textContent == ""){
+          onValue(ref(db, `server/room-${roomid}/player${player}`), (snap) => {
+            map[3] = `${snap.val().turn}`;
+            box3.textContent = `${snap.val().turn}`;
+            dataUpdate();
+          });
+        }
+      });
+    });
+    box4.addEventListener("click", () => {
+      onValue(ref(db, `server/room-${roomid}`), (ss) => {
+        if(ss.val().playerturn == `player${player}` && box4.textContent == ""){
+          onValue(ref(db, `server/room-${roomid}/player${player}`), (snap) => {
+            map[4] = `${snap.val().turn}`;
+            box4.textContent = `${snap.val().turn}`;
+            dataUpdate();
+          });
+        }
+      });
+    });
+    box5.addEventListener("click", () => {
+      onValue(ref(db, `server/room-${roomid}`), (ss) => {
+        if(ss.val().playerturn == `player${player}` && box5.textContent == ""){
+          onValue(ref(db, `server/room-${roomid}/player${player}`), (snap) => {
+            map[5] = `${snap.val().turn}`;
+            box5.textContent = `${snap.val().turn}`;
+            dataUpdate();
+          });
+        }
+      });
+    });
+    box6.addEventListener("click", () => {
+      onValue(ref(db, `server/room-${roomid}`), (ss) => {
+        if(ss.val().playerturn == `player${player}` && box6.textContent == ""){
+          onValue(ref(db, `server/room-${roomid}/player${player}`), (snap) => {
+            map[6] = `${snap.val().turn}`;
+            box6.textContent = `${snap.val().turn}`;
+            dataUpdate();
+          });
+        }
+      });
+    });
+    box7.addEventListener("click", () => {
+      onValue(ref(db, `server/room-${roomid}`), (ss) => {
+        if(ss.val().playerturn == `player${player}` && box7.textContent == ""){
+          onValue(ref(db, `server/room-${roomid}/player${player}`), (snap) => {
+            map[7] = `${snap.val().turn}`;
+            box7.textContent = `${snap.val().turn}`;
+            dataUpdate();
+          });
+        }
+      });
+    });
+    box8.addEventListener("click", () => {
+      onValue(ref(db, `server/room-${roomid}`), (ss) => {
+        if(ss.val().playerturn == `player${player}` && box8.textContent == ""){
+          onValue(ref(db, `server/room-${roomid}/player${player}`), (snap) => {
+            map[8] = `${snap.val().turn}`;
+            box8.textContent = `${snap.val().turn}`;
+            dataUpdate();
+          });
+        }
+      });
+    });
     
     function startGame(){
       if(player == 1){
@@ -320,6 +386,14 @@
       
       onValue(ref(db, `server/room-${roomid}/tttbox`), (ss) => {
         box0.textContent = ss.val().b0;
+        box1.textContent = ss.val().b1;
+        box2.textContent = ss.val().b2;
+        box3.textContent = ss.val().b3;
+        box4.textContent = ss.val().b4;
+        box5.textContent = ss.val().b5;
+        box6.textContent = ss.val().b6;
+        box7.textContent = ss.val().b7;
+        box8.textContent = ss.val().b8;
       });
     }
     
