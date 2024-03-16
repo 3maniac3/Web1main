@@ -160,7 +160,7 @@
         turn: "X"
       });
       player = 1;
-      document.getElementById("createUsernameInput").style.display = "none";
+      document.getElementById("createUsernameContainer").style.display = "none";
       
       infoPanel.style.color = "green";
       infoPanel.textContent = "Searching for Else...";
@@ -310,9 +310,11 @@
         });
       });
       
-      update(ref(db, `server/room-${roomid}`), {
-        tttbox: map
-      });
+      for(let i = 0; i < map.length; i ++){
+        update(ref(db, `server/room-${roomid}`), {
+          tttbox[i]: map[i]
+        });
+      }
     }
     
     mainLoop();
