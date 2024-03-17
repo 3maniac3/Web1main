@@ -367,6 +367,9 @@
             map[8] = `${snap.val().turn}`;
             box8.textContent = `${snap.val().turn}`;
             dataUpdate();
+            update(ref(db, `server/room-${roomid}/tttbox`), {
+              b8: snap.val().turn
+            });
           });
         }
       });
