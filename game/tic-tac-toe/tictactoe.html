@@ -223,7 +223,7 @@
     
     function dataUpdate(){
       if(player == 1){
-        update(ref(dn, `server/room-$[roomid}/`), {
+        update(ref(db, `server/room-${roomid}`), {
           playerturn: "player2"
         });
       } else if(player == 2){
