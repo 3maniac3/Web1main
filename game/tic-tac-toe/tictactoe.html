@@ -222,7 +222,17 @@
     });
     
     function dataUpdate(){
-      onValue(ref(db, `server/room-${roomid}`), (ss) => {
+      if(player == 1){
+        update(ref(dn, `server/room-$[roomid}/`), {
+          playerturn: "player2"
+        });
+      } else if(player == 2){
+        update(ref(db, `server/room-${roomid}`), {
+          playerturn: "player1"
+        });
+      }
+      
+      /*onValue(ref(db, `server/room-${roomid}`), (ss) => {
         let data = ss.val();
         if(ss.exists()){
           if(data.playerturn == "player1"){
@@ -235,7 +245,7 @@
             });
           }
         }
-      });
+      });*/
     }
     
     box0.addEventListener("click", () => {
@@ -357,9 +367,6 @@
             map[8] = `${snap.val().turn}`;
             box8.textContent = `${snap.val().turn}`;
             dataUpdate();
-            update(ref(db, `server/room-${roomid}/tttbox`), {
-              b8: snap.val().turn
-            });
           });
         }
       });
