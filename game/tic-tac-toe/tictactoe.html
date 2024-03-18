@@ -525,7 +525,9 @@
         }
       });
       onValue(ref(db, `server/room-${roomid}`), ss => {
-        if(ss.val().winner == `player${player}`){
+        if(ss.val().winner == "none"){
+          console.clear();
+        } else if(ss.val().winner == `player${player}`){
           alert("YOU WIN");
         } else{
           alert("YOI LOSE!");
