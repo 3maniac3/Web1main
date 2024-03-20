@@ -208,11 +208,27 @@ let restartSec = false;
 let leaveSec = false;
 
 // characters
-let player = new Fighter("steve", "Steve", 10, "right", 260, 70);
-let enemy = new Fighter("the_purple_guy", "The Purple Guy", 1, "left", 260, 300);
+let player = new Fighter("rick_de_silva", "Rick de Silva", 2, "right", 260, 70);
+let enemy = new Fighter("mike_tyson", "Mike Tyson", 5, "left", 260, 300);
+
+const charNameBox = [
+  {name: "rick_de_silva", namedis: "Rick de Silva", strength: 2},
+  {name: "mike_tyson", namedis: "Mike Tyson", strength: 5},
+  {name: "the_purple_guy", namedis: "The Purple Guy", strength: 1},
+  {name: "steve", namedis: "Steve", strength: 3},
+  {name: "none", namedis: "none", strength: 0},
+];
+
+const charSelectBox = [
+  {x: 40, y: 100},
+  {x: 40, y: 200},
+  {x: 40, y: 300},
+  {x: 40, y: 400},
+  {x: 40, y: 500}
+];
 
 // system
-let system = "gameplay";
+let system = "character-select";
 
 // sounds
 let mainGameSound = new Audio("streetfighter-asset/sound/in_game_music.ogg");
@@ -232,6 +248,93 @@ const playSound = function(sound){
   audio.play();
 }
 
+// selection
+function charselTouch(){
+  canvas.addEventListener("touchstart", e => {
+    [...e.changedTouches].forEach(touch => {
+      let x = touch.pageX;
+      let y = touch.pageY;
+      
+      for(let i = 0; i < charSelectBox.length - 1; i++){
+        if(x > charSelectBox[i].x && x < charSelectBox[i].x + 80 && y > charSelectBox[i].y && y < charSelectBox[i].y + 50){
+          player.name = charNameBox[i].name;
+          player.namedis = charNameBox[i].namedis;
+          player.strength = charNameBox[i].strength;
+        }
+      }
+    });
+  });
+}
+
+function characterSelect(){
+  let charselBg = new Image();
+  let warehouse = new Image();
+  let playerDis = new Image();
+  let enemyDis = new Image();
+  
+  ctx.save();
+  charselBg.src = "streetfighter-asset/image/charsel-bg.png";
+  ctx.drawImage(charselBg, 150, 0, 210, 680);
+  ctx.restore();
+  
+  ctx.save();
+  playerDis.src = `streetfighter-asset/showpanel/${player.name}.png`;
+  ctx.translate(362, -100);
+  ctx.rotate(degree(90));
+  ctx.drawImage(playerDis, 0, 0, 400, 180);
+  ctx.restore();
+  
+  ctx.save();
+  enemyDis.src = `streetfighter-asset/showpanel/${enemy.name}.png`;
+  ctx.translate(362, 370);
+  ctx.rotate(degree(90));
+  ctx.drawImage(enemyDis, 0, 0, 400, 180);
+  ctx.restore();
+  
+  ctx.save();
+  ctx.scale(2, 2);
+  ctx.translate(90, -8);
+  ctx.rotate(degree(90));
+  ctx.fillText(`${player.namedis}`, 10, 10);
+  ctx.restore();
+  
+  ctx.save();
+  ctx.scale(2, 2);
+  ctx.translate(90, 230);
+  ctx.rotate(degree(90));
+  ctx.fillText(`${enemy.namedis}`, 10, 10);
+  ctx.restore();
+  
+  ctx.save();
+  ctx.fillStyle = "red";
+  ctx.scale(2, 2);
+  ctx.translate(105, 80);
+  ctx.rotate(degree(90));
+  ctx.fillText(`Strength: ${player.strength}`, 10, 10);
+  ctx.restore();
+  
+  ctx.save();
+  ctx.fillStyle = "red";
+  ctx.scale(2, 2);
+  ctx.translate(105, 177);
+  ctx.rotate(degree(90));
+  ctx.fillText(`Strength: ${enemy.strength}`, 10, 10);
+  ctx.restore();
+  
+  ctx.save();
+  warehouse.src = "streetfighter-asset/image/warehouse_bg.png";
+  ctx.drawImage(warehouse, 0, 0, 150, 680);
+  ctx.restore();
+  
+  for(let i = 0; i < charSelectBox.length; i++){
+    ctx.save();
+    ctx.fillStyle = "red";
+    ctx.fillRect(charSelectBox[i].x, charSelectBox[i].y, 80, 50);
+    ctx.restore();
+  }
+}
+
+// main gameplay
 function touCheck(){
   canvas.addEventListener("touchstart", e => {
     [...e.changedTouches].forEach(touch => {
@@ -400,7 +503,7 @@ function enemyMove(){
   }
   // enemy hit and combo
   if(enemy.facing == "right" && player.alive && enemy.attack && !(enemy.knockback) && enemy.alive){
-    if(enemy.y < player.y && enemy.y > player.y - 100 && enemy.x < player.x + 50){
+    if(enemy.y < player.y && enemy.y > player.y - 80 && enemy.x < player.x + 30){
       player.health -= enemy.strength;
       player.y += 5;
       player.cooldown = hitCool;
@@ -422,7 +525,7 @@ function enemyMove(){
       }
   }
   if(enemy.facing == "left" && player.alive && enemy.attack && !(enemy.knockback) && enemy.alive){
-    if(enemy.y > player.y && enemy.y < player.y + 100 && enemy.x < player.x + 50){
+    if(enemy.y > player.y && enemy.y < player.y + 80 && enemy.x < player.x + 30){
         player.health -= enemy.strength;
         player.y -= 5;
         player.cooldown = hitCool;
@@ -720,21 +823,29 @@ function mainLoop(){
         //mainGameSound.loop = true;
         mainGameSound.play();
       }
-      break
+      break;
     
     case "pauseMenu":
       drawBackground();
       drawCharacter();
       drawPanel();
       pauseMenu();
-      break
+      break;
+      
+    case "character-select":
+      characterSelect();
+      break;
   }
 }
 
 switch(system){
   case "gameplay":
     touCheck();
-    break
+    break;
+  
+  case "character-select":
+    charselTouch();
+    break;
 }
 
 mainLoop();
