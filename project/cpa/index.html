@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css">
+  <link rel="stylesheet" href="style.css">
+  <title>City Population Data</title>
+</head>
+<body>
+  
+  <section class="search-box">
+    <input id="input-col" type="text" list="all-data" placeholder="Search City">
+    <button id="submit-btn">
+      <i class="ri-search-line"></i>
+    </button>
+    <label id="more-btn" for="sidebar-switch">
+      <i class="ri-more-2-line"></i>
+    </label>
+  </section>
+  
+  <section class="city-box">
+    
+    <div class="city-information">
+      <img id="country-flag" src="">
+      <div class="city-name">
+        <h3 id="city-name"></h3>
+        <p id="country-name"></p>
+      </div>
+    </div>
+    
+    <div class="city-population"></div>
+    
+  </section>
+  
+  <section class="not-found">
+    <i class="ri-search-eye-line"></i>
+    <p>Not Found</p>
+  </section>
+  
+  <input type="checkbox" id="sidebar-switch">
+  <div class="sidebar-menu">
+    <div class="upper-sec">
+      <label for="sidebar-switch">
+        <i class="ri-close-line"></i>
+      </label>
+      <h3>Option</h3>
+    </div>
+    <div class="lower-sec">
+      <label for="auto-complete">Autocomplete</label>
+      <input id="auto-complete" type="checkbox" checked="checked">
+    </div>
+  </div>
+  
+  <div class="plus-btn">
+    <label class="button-sec" for="bottom-menu-switch">
+      <i class="ri-add-line"></i>
+    </label>
+    <input id="bottom-menu-switch" type="checkbox">
+  </div>
+  
+  <div class="bottom-option">
+    <ul class="option-section">
+      <h3>Search Option</h3>
+      <li class="option active">Select City by City Name</li>
+      <li class="option">Select City Lists by Country Name</li>
+    </ul>
+  </div>
+  
+  <!-- CITY LISTS BY COUNTRY -->
+  <section class="country-box">
+    <div class="country-flag-sec">
+      <img id="cb-country-flag">
+      <h3 id="cb-country-name">Germany</h3>
+    </div>
+    
+    <p>Cities</p>
+    <ul class="city-lists"></ul>
+    
+  </section>
+  
+  <!-- DATALIST SECTION -->
+  <datalist id="all-data"></datalist>
+  
+  <!-- SCRIPT SECTION -->
+  <script src="script.js"></script>
+</body>
+</html>
