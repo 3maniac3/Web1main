@@ -1,0 +1,143 @@
+*{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+:root{
+  --chessboard-size: 340px;
+}
+
+body{
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.container{
+  border: 1px solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container .chessboard{
+  width: var(--chessboard-size);
+  height: var(--chessboard-size);
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+}
+
+.chessboard .square{
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.square.bright{
+  background-color: #eeeed2;
+}
+.square.dark{
+  background-color: #769656;
+}
+.square:hover{
+  background-color: #c7c7c7;
+}
+.square.selected{
+  background-color: lime;
+}
+.square.eat{
+  background-color: red;
+}
+.square.special::before{
+  content: "";
+  width: 50%;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: aqua;
+}
+.square.path::before{
+  content: "";
+  width: 50%;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: lime;
+}
+.square.win::before{
+  content: "🜲";
+  font-weight: bold;
+  font-size: .7rem;
+  width: 35%;
+  height: 35%;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 1px 1px 5px #000;
+  background-color: #ffcf15;
+}
+.square.lose::before{
+  content: "!!";
+  width: 35%;
+  height: 35%;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 1px 1px 5px #000;
+  background-color: #fff;
+}
+
+.pawn-promote{
+  width: 12%;
+  height: 31%;
+  padding: 5px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  gap: 5px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 5px #000;
+  background-color: #fff;
+}
+.pawn-promote .arrow{
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  transform: rotate(45deg);
+  background-color: inherit;
+}
+
+.pawn-promote .promote{
+  width: 100%;
+  height: 15%;
+  z-index: 1;
+}
+
+.square .icon{
+  width: 80%;
+  height: 80%;
+}
