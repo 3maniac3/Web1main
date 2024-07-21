@@ -1222,19 +1222,14 @@ for(let i = 0; i < size; i++){
     }
     else if(squares[i].classList.contains("special")){
       let idx = 0;
-      map.forEach(m => {
-        if(!(m.icon == undefined) && m
-        .icon.includes("pawn")) m.special 
-        = false;
-      });
       squares.forEach(e => {
         if(e.classList.contains("selected"
         )){
           if(!(map[idx].icon == undefined) && map[idx].icon.includes("pawn")){
             squares[i].appendChild(e.
             children[0]);
-            for(let i = 0; i < size; i++){
-              if(map[i].special && !(map[i].icon == undefined) && map[i].icon.includes("pawn")) squares[i].removeChild(squares[i].firstChild);
+            for(let j = 0; j < size; j++){
+              if(map[j].special && !(map[j].icon == undefined) && map[j].icon.includes("pawn")) squares[j].removeChild(squares[j].firstChild);
             }
           }
           else if(!(map[idx].icon == undefined) && map[idx].icon.includes("king")){
@@ -1251,6 +1246,11 @@ for(let i = 0; i < size; i++){
           reload();
         }
         idx++;
+      });
+      map.forEach(m => {
+        if(!(m.icon == undefined) && m
+        .icon.includes("pawn")) m.special 
+        = false;
       });
       if(turn == "white") turn = "black";
       else turn = "white";
