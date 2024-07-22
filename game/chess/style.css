@@ -4,10 +4,6 @@
   box-sizing: border-box;
 }
 
-:root{
-  --chessboard-size: 340px;
-}
-
 body{
   min-height: 100vh;
   overflow-x: hidden;
@@ -20,14 +16,16 @@ body{
 
 .container{
   border: 1px solid;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .container .chessboard{
-  width: var(--chessboard-size);
-  height: var(--chessboard-size);
+  width: 100%;
+  aspect-ratio: 1 / 1;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
@@ -76,7 +74,7 @@ body{
   border-radius: 50%;
   background-color: lime;
 }
-.square.win::before{
+.square .win{
   content: "🜲";
   font-weight: bold;
   font-size: .7rem;
@@ -85,7 +83,7 @@ body{
   position: absolute;
   top: -5px;
   right: -5px;
-  z-index: 1;
+  z-index: 10;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -93,7 +91,7 @@ body{
   box-shadow: 1px 1px 5px #000;
   background-color: #ffcf15;
 }
-.square.lose::before{
+.square .lose{
   content: "!!";
   width: 35%;
   height: 35%;
