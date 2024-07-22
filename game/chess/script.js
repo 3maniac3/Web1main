@@ -1184,6 +1184,7 @@ for(let i = 0; i < size; i++){
         }
         idx++;
       });
+      playSound("sound/move.mp3");
       if(turn == "white") turn = "black";
       else if(turn == "black")
         turn = "white";
@@ -1216,6 +1217,7 @@ for(let i = 0; i < size; i++){
         }
         idx++;
       });
+      playSound("sound/capture.mp3");
       if(turn == "white") turn = "black";
       else if(turn == "black") 
         turn = "white";
@@ -1231,6 +1233,7 @@ for(let i = 0; i < size; i++){
             for(let j = 0; j < size; j++){
               if(map[j].special && !(map[j].icon == undefined) && map[j].icon.includes("pawn")) squares[j].removeChild(squares[j].firstChild);
             }
+            playSound("sound/capture.mp3");
           }
           else if(!(map[idx].icon == undefined) && map[idx].icon.includes("king")){
             squares[i].appendChild(e.children[0]);
@@ -1242,6 +1245,7 @@ for(let i = 0; i < size; i++){
               squares[i+1].appendChild
               (squares[i-2].children[0]);
             }
+            playSound("sound/castle.mp3");
           }
           reload();
         }
@@ -1260,6 +1264,11 @@ for(let i = 0; i < size; i++){
 }
   
 // functions
+function playSound(soundName){
+  const sound = new Audio(soundName);
+  sound.play();
+}
+
 function promotePawn(element, col){
   const pos = element.getBoundingClientRect();
   const container = 
@@ -1295,7 +1304,7 @@ function promotePawn(element, col){
     box.appendChild(arrow);
     arrow.style.bottom = "0px";
     box.style.left = String(pos.x) + "px";
-    box.style.top = String(pos.y-pos.height*5) + "px";
+    box.style.top = String(pos.y-pos.height*5+pos.height/3) + "px";
     for(let i = 0; i < 4; i++){
       const temp = document.createElement("img");
       temp.id = "b-" + blackPromote[i];
@@ -1317,7 +1326,7 @@ function promotePawn(element, col){
         .setAttribute("src", `white/${p
         .id}.png`);
         box.remove();
-        reload();
+        playSound("sound/promote.mp3");
         turn = "black";
       }
       else if(p.id.startsWith("b")){
@@ -1326,6 +1335,7 @@ function promotePawn(element, col){
         .setAttribute("src", `black/${p
         .id}.png`);
         box.remove();
+        playSound("sound/promote.mp3");
         turn = "white";
       }
     });
