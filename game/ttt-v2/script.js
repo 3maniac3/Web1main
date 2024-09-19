@@ -358,7 +358,6 @@ function gamePlayDb(){
 function checkWinnerDb(){
   onValue(ref(db, `server/room-${idVar}`), ss => {
     if(!ss.exists()) return;
-    if(ss.val().turn == "none") return;
     const data = ss.val().map;
     // horizontal
     if(data[0] == "x" && data[1] == "x" && data[2] == "x") 
@@ -420,10 +419,6 @@ function checkWinnerDb(){
     }
     turnBox.style.display = "none";
     returnBox.style.display = "flex";
-    update(ref(db, `server/room-${idVar}`), { 
-      "turn": "none", 
-      "winner": player 
-    });
   }
 }
 
