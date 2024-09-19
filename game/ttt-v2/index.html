@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvC9l10HHunr_r_WyWtsJ1sTERdYLUwsIwFRyHCEGaeqsJs6LgBI2pQKc&s=10">
+  <link rel="stylesheet" href="style.css">
+  <title>Berkilau | Game | Tic Tac Toe</title>
+</head>
+<body>
+  
+  <div class="menu-box">
+    <h1>tic tac toe</h1>
+    <div class="create-room">
+      create room
+    </div>
+    <div class="join-room">
+      join room
+    </div>
+  </div>
+  
+  <div class="create-box">
+    <h2>create room</h2>
+    <div class="id-box">
+      id:
+      <input class="id" type="number" readonly>
+      <div class="generate">generate</div>
+    </div>
+    <div class="name-box">
+      name:
+      <input class="create-name" type="text" placeholder="enter your name">
+    </div>
+    <div class="create">create</div>
+    <div class="back">back</div>
+  </div>
+  
+  <div class="join-box">
+    <h2>join room</h2>
+    <input class="id-input" type="number" placeholder="enter room id" max="5">
+    <input class="join-name" type="text" placeholder="enter your name">
+    <h3 class="room-info">room is not found!</h3>
+    <div class="join">join</div>
+    <div class="back">back</div>
+  </div>
+  
+  <div class="wait-box">
+    <h3>waiting for other player...</h3>
+  </div>
+  
+  <div class="container">
+    <div class="ttt-box">
+      <div class="square" id="0"></div>
+      <div class="square" id="1"></div>
+      <div class="square" id="2"></div>
+      <div class="square" id="3"></div>
+      <div class="square" id="4"></div>
+      <div class="square" id="5"></div>
+      <div class="square" id="6"></div>
+      <div class="square" id="7"></div>
+      <div class="square" id="8"></div>
+    </div>
+    
+    <div class="player-box you">
+      <div class="icon-you"></div>
+      <div>
+        <i class="person">you</i>
+        <div class="name-you"></div>
+      </div>
+    </div>
+    
+    <div class="player-box else">
+      <div>
+        <i class="person">else</i>
+        <div class="name-else"></div>
+      </div>
+      <div class="icon-else"></div>
+    </div>
+    
+    <div class="turn-box"></div>
+    <div class="return-box">
+      back to menu
+    </div>
+  </div>
+  
+  <script type="module" src="script.js">
+  </script>
+</body>
+</html>
