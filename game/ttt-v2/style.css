@@ -365,9 +365,11 @@ body{
   text-transform: capitalize;
   display: none;
   position: absolute;
-  bottom: 10px;
+  top: 10px;
+  left: 10px;
   border-radius: 100px;
-  box-shadow: 1px 1px 5px #000;
+  color: #fff;
+  background-color: #000;
 }
 
 .container .return-box:active{
