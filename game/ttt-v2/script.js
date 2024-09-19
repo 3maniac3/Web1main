@@ -146,6 +146,7 @@ returnBox.addEventListener("click", () => {
   squares.forEach(sqr => {
     sqr.style.background = "transparent";
   });
+  generateId();
 });
 
 // functions
@@ -346,7 +347,8 @@ function gamePlayDb(){
     if(ss.val() == turn){
       playerBox[0].style.background = "#87fb87";
       playerBox[1].style.background = "";
-    } else{
+    } 
+    else if(ss.val() != "none"){
       playerBox[1].style.background = "#87fb87";
       playerBox[0].style.background = "";
     }
