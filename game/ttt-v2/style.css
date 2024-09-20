@@ -307,6 +307,13 @@ body{
   color: #ff0000;
 }
 
+.container .player-box.you i.draw::after{
+  content: "draw";
+  margin-left: 10px;
+  text-transform: uppercase;
+  color: #c7c7c7;
+}
+
 .player-box.you > div:last-child{
   height: 100%;
   padding-left: 5px;
@@ -339,6 +346,13 @@ body{
   color: #ff0000;
 }
 
+.container .player-box.else i.draw::after{
+  content: "draw";
+  margin-left: 10px;
+  text-transform: uppercase;
+  color: #c7c7c7;
+}
+
 .player-box.else > div:first-child{
   height: 100%;
   padding-right: 5px;
@@ -354,7 +368,7 @@ body{
   text-transform: capitalize;
   display: flex;
   position: absolute;
-  bottom: 10px;
+  top: 10px;
 }
 
 .container .return-box{

@@ -142,6 +142,7 @@ returnBox.addEventListener("click", () => {
   persons.forEach(person => {
     person.classList.remove("win");
     person.classList.remove("lose");
+    person.classList.remove("draw");
   });
   squares.forEach(sqr => {
     sqr.style.background = "transparent";
@@ -398,6 +399,16 @@ function checkWinnerDb(){
     winner([0, 4, 8], "o");
     else if(data[2] == "o" && data[4] == "o" && data[6] == "o") 
     winner([2, 4, 6], "o");
+    
+    // draw
+    if(data[0] != "" && data[1] != "" && data[2] != ""){
+      if(data[3] != "" && data[4] != "" && data[5] != ""){
+        if(data[6] != "" && data[7] != "" && data[8] != ""){
+          persons[0].classList.add("draw");
+          persons[1].classList.add("draw");
+        }
+      }
+    }
   });
   function winner(li, icn){
     if(icn == icon){
