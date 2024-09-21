@@ -147,6 +147,7 @@ returnBox.addEventListener("click", () => {
   squares.forEach(sqr => {
     sqr.style.background = "transparent";
   });
+  remove(ref(db, `server/room-${idVar}`));
   generateId();
 });
 
