@@ -53,7 +53,7 @@ const returnBox = document.querySelector(".return-box");
 // variables
 let player, idVar, icon, turn;
 
-// event handlers
+// event listeners
 window.addEventListener("load", () => {
   generateId();
 });
@@ -129,7 +129,6 @@ back.forEach(i => {
 
 returnBox.addEventListener("click", () => {
   player = "";
-  idVar = "";
   nameVal.value = "";
   idInput.value = "";
   joinName.value = "";
@@ -148,6 +147,7 @@ returnBox.addEventListener("click", () => {
     sqr.style.background = "transparent";
   });
   remove(ref(db, `server/room-${idVar}`));
+  idVar = "";
   generateId();
 });
 
@@ -407,6 +407,10 @@ function checkWinnerDb(){
         if(data[6] != "" && data[7] != "" && data[8] != ""){
           persons[0].classList.add("draw");
           persons[1].classList.add("draw");
+          playerBox[0].style.background = "#fff";
+          playerBox[1].style.background = "#fff";
+          turnBox.style.display = "none";
+          returnBox.style.display = "flex";
         }
       }
     }
@@ -418,17 +422,15 @@ function checkWinnerDb(){
       squares[li[2]].style.background = "#87fb87";
       persons[0].classList.add("win");
       persons[1].classList.add("lose");
-      playerBox[0].style.background = "transparent";
-      playerBox[1].style.background = "transparent";
     } else{
       squares[li[0]].style.background = "#ff0000";
       squares[li[1]].style.background = "#ff0000";
       squares[li[2]].style.background = "#ff0000";
       persons[1].classList.add("win");
       persons[0].classList.add("lose");
-      playerBox[0].style.background = "transparent"
-      playerBox[1].style.background = "transparent"
     }
+    playerBox[0].style.background = "#fff";
+    playerBox[1].style.background = "#fff";
     turnBox.style.display = "none";
     returnBox.style.display = "flex";
   }
