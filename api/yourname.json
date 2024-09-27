@@ -1,1 +1,13 @@
-
+{
+  "creator": "Makoto Shinkai",
+  "protagonist": "Taki Tachibana",
+  "female_character": "Mitsuha Miyamizu",
+  "place": [
+    "Itomori Village",
+    "City of Tokyo"
+  ],
+  "event": {
+    "beginning": "Commet News",
+    "ending": "Commet Falling"
+  }
+}
