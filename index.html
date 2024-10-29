@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/hotnews.css">
+    <link rel="icon" href="#">
+    <title>Sparkle | Home</title>
+</head>
+<body>
+    
+    <header>
+        <nav>
+            <label id="menu-btn" for="menu">
+                <span id="menu-normal">☰</span>
+                <span id="menu-active">×</span>
+            </label>
+            <input id="menu" type="checkbox" style="display:none;">
+            <div class="fun-panel">
+                <img id="gif-display">
+            </div>
+            <a id="logo" href="https://berkilau.netlify.app">
+                <img src="asset/logo.png" style="width:3em">
+            </a>
+        </nav>
+        <div class="menu-list">
+            <h2>Menu</h2>
+            <ul>
+                <li id="active"><a href="#">Home</a></li>
+                <li><a href="#">Web App</a></li>
+                <li><a href="#">Web Game</a></li>
+            </ul>
+        </div>
+    </header>
+    
+    <section class="hot-news">
+        <span id="new-fragment">✹<span>NEW</span></span>
+        <div id="img-display"></div>
+        <h2 id="img-title">Tic Tac Toe</h2>
+        <table>
+            <tr>
+                <td>Genre</td>
+                <td>: Puzzle</td>
+            </tr>
+            <tr>
+                <td>Multiplayer</td>
+                <td>: YES (Duo)</td>
+            </tr>
+        </table>
+    </section>
+    
+    <script src="js/script.js"></script>
+</body>
+</html>
