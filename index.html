@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/hotnews.css">
-    <link rel="icon" href="asset/icon/logo.png">
+    <link rel="icon" href="#">
     <title>Sparkle | Home</title>
 </head>
 <body>
@@ -29,26 +29,44 @@
             <h2>Menu</h2>
             <ul>
                 <li id="active"><a href="#">Home</a></li>
-                <li><a href="#">Web App</a></li>
-                <li><a href="#">Web Game</a></li>
+                <li><a href="#">App</a></li>
+                <li><a href="#">Game</a></li>
             </ul>
         </div>
     </header>
     
     <section class="hot-news">
-        <span id="new-fragment">✹<span>NEW</span></span>
-        <div id="img-display"></div>
+        <div id="new-fragment">
+            <div>✹</div>
+            <div>NEW</div>
+        </div>
+        <div id="img-display">
+            <img src="asset/image/imgpanel-1.jpg">
+            <img src="asset/image/imgpanel-2.jpg">
+            <img src="asset/image/imgpanel-3.jpg">
+            <img src="asset/image/imgpanel-4.jpg">
+        </div>
         <h2 id="img-title">Tic Tac Toe</h2>
         <table>
             <tr>
-                <td>Genre</td>
-                <td>: Puzzle</td>
+                <th>Type</th>
+                <td>:</td>
+                <td id="type">Web Game</td>
             </tr>
             <tr>
-                <td>Multiplayer</td>
-                <td>: YES (1v1)</td>
+                <th>Genre</th>
+                <td>:</td>
+                <td id="genre">Puzzle</td>
+            </tr>
+            <tr>
+                <th>Multiplayer</th>
+                <td>:</td>
+                <td id="multiplayer">Yes (1v1)</td>
             </tr>
         </table>
+        <div class="play">
+            <a href="https://berkilau.netlify.app/game/ttt-v2">Play</a>
+        </div>
     </section>
     
     <script src="js/script.js"></script>
