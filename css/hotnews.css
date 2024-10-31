@@ -1,6 +1,13 @@
+#hot-news-title {
+    width: 85%;
+    margin: 1em 0 1em 0;
+    border-bottom: 1px solid #ffffff50;
+    color: #fff;
+}
 .hot-news {
     width: 85%;
     margin: 2em;
+    margin-top: 0;
     position: relative;
     color: #fff;
     border: 1px solid #ffffff50;
@@ -42,11 +49,12 @@
     scroll-snap-align: start;
     width: 100%;
 }
-.hot-news #img-title {
+.hot-news #img-title,
+.hot-news #description,
+.hot-news table {
     margin: 1em;
 }
 .hot-news table {
-    margin: 1em;
     text-align: left;
     color: #fff;
 }

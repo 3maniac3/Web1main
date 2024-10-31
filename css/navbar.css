@@ -86,7 +86,7 @@ header nav .fun-panel {
 }
 header nav .fun-panel.show {
     width: 200px;
-    height: 45px;
+    height: 45px
 }
 .fun-panel #gif-display {
     width: 100%;

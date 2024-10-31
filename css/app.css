@@ -1,0 +1,51 @@
+.app-section {
+    width: 85%;
+    margin-top: 3em;
+}
+.app-section #title {
+    color: #fff;
+    margin-bottom: 1em;
+}
+.app-section .app-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+.app-container .app {
+    width: 100%;
+    padding: .3em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    border: 1px solid #ffffff50;
+    border-radius: 20px;
+}
+.app-container .app:active {
+    border: 1px solid #00ff00;
+}
+.app .description {
+    display: flex;
+    gap: 1em;
+}
+.app .description img {
+    width: 5em;
+    height: 5em;
+    border: 1px solid #fff;
+    border-radius: 20px;
+}
+.app .description h2 {
+    color: #fff;
+    margin-bottom: 1em;
+}
+.app p {
+    color: #ffffff90;
+}
+.app a {
+    margin-right: 1em;
+    font-weight: bold;
+    align-self: flex-end;
+    color: #00ff00;
+}
