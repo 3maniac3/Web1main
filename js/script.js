@@ -5,6 +5,8 @@ window.addEventListener("load", showFunPanel);
 
 function showFunPanel() {
     const month = new Date;
-    gifDisplay.src = `asset/gif/${month.getMonth()+1}.gif`;
+    gifDisplay.style.background = `url("asset/gif/${month.getMonth()+1}.gif")`;
+    gifDisplay.style.backgroundSize = "100% 100%";
+    gifDisplay.style.backgroundRepeat = "no-repeat";
     funPanel.classList.add("show");
 }
