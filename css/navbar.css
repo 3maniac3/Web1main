@@ -72,7 +72,7 @@ header nav:has(#menu:checked) + .menu-list {
 }
 .menu-list ul #active,
 .menu-list ul #active a {
-    color: #ff00ff;
+    color: #00ff00;
 }
 header nav .fun-panel {
     width: 0;
