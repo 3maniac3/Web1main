@@ -1,0 +1,24 @@
+{
+    "apps": [
+        {
+            "icon": "../asset/icon/app-cpd.png",
+            "name": "City Population Data",
+            "link": "project/cpd",
+            "description": "An app that will show you the population of a city based in the spesific years. You can also search for a country and it will show you a list of cities you can use to see the population of the city."
+        }
+    ],
+    "games": [
+        {
+            "icon": "../asset/icon/game-ttt.png",
+            "name": "Tic Tac Toe",
+            "link": "game/ttt-v2",
+            "description": "A simple Tic Tac Toe game where you can play together with your friends! It's just a normal Tic Tac Toe game basically."
+        },
+        {
+            "icon": "../asset/icon/game-chess.png",
+            "name": "Chess",
+            "link": "game/chess",
+            "description": "It's a chess where you can play just like normal chess! Nothing special actually, it's not done yet and futhermore it's still under developed (i guess)."
+        }
+    ]
+}
