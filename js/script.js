@@ -6,9 +6,9 @@ const gameContainer = document.querySelector(".game-container");
 window.addEventListener("load", showFunPanel);
 
 function showFunPanel() {
-    const month = new Date;
+    const date = new Date;
     
-    gifDisplay.style.background = `url("asset/gif/${month.getMonth()+1}.gif")`;
+    gifDisplay.style.background = `url("asset/gif/${date.getMonth()+1}.gif")`;
     gifDisplay.style.backgroundSize = "100% 100%";
     gifDisplay.style.backgroundRepeat = "no-repeat";
     funPanel.classList.add("show");
@@ -23,7 +23,6 @@ function loadFeatures() {
         const games = item.games;
         
         apps.forEach(list => {
-            console.log(list);
             const app = document.createElement("div");
             app.classList.add("app");
             app.innerHTML = `
@@ -38,7 +37,6 @@ function loadFeatures() {
         });
         
         games.forEach(list => {
-            console.log(list);
             const game = document.createElement("div");
             game.classList.add("game");
             game.innerHTML = `
