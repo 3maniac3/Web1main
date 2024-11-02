@@ -1,0 +1,43 @@
+footer {
+    width: 85%;
+    margin-top: 5em;
+    padding-bottom: 2em;
+}
+footer .footer-logo {
+    margin-bottom: 1em;
+    padding-top: 1em;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #ffffff50;
+    color: #fff;
+}
+.footer-logo div p {
+    font-size: .8rem;
+    color: #ffffff90;
+}
+footer a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: .3em;
+    color: #fff;
+}
+footer .copyright {
+    width: 100%;
+    margin-top: 3em;
+    text-align: center;
+    color: #ffffff90;
+}
+footer .setting {
+    margin-top: 1em;
+    font-size: 1rem;
+    list-style: none;
+    text-decoration: none;
+    line-height: 2em;
+}
+.setting li a {
+    color: #ffffff90;
+}
+.copyright p {
+    font-size: .9rem;
+}
