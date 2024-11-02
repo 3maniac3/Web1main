@@ -18,7 +18,7 @@
             "icon": "../asset/icon/game-chess.png",
             "name": "Chess",
             "link": "game/chess",
-            "description": "It's a chess where you can play just like normal chess! Nothing special actually, it's not done yet and futhermore it's still under developed (i guess)."
+            "description": "It's a chess where you can play just like normal chess! Nothing special actually, and it's still not done yet."
         }
     ]
 }
