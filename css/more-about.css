@@ -6,6 +6,9 @@ section h1 {
     font-size: 2em;
     margin-bottom: 1em;
 }
+section p {
+    margin-top: 1em;
+}
 section ul {
     margin-left: 1em;
 }
