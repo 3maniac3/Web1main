@@ -113,7 +113,7 @@ body {
 #info.beggining {
     font-weight: bold;
     position: absolute;
-    bottom: 10%;
+    bottom: 5%;
     color: #fff;
     animation: infoMovement 1s linear infinite;
 }
@@ -122,7 +122,7 @@ body {
     font-size: 2em;
     font-weight: bold;
     position: absolute;
-    bottom: 10%;
+    bottom: 5%;
     color: #00ff00;
 }
 
@@ -130,7 +130,7 @@ body {
     font-size: 2em;
     font-weight: bold;
     position: absolute;
-    bottom: 10%;
+    bottom: 5%;
     color: #ff0000;
 }
 
