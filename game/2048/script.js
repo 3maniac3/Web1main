@@ -163,6 +163,7 @@ function finalCheck() {
             info.textContent = "Victorious!";
             info.setAttribute("class", "win");
             info.style.display = "block";
+            return;
         }
     }
     
