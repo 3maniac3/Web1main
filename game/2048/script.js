@@ -1,9 +1,12 @@
 const info = document.getElementById("info");
+const score = document.getElementById("score");
+const highScore = document.getElementById("high-score");
 
 const radius = 50;
 let startX, startY, moveX, moveY;
+let point = 0, highPoint = 0;
 
-window.addEventListener("load", () => { generate(2); repaint() });
+window.addEventListener("load", () => generate(2));
 window.addEventListener("touchstart", touch);
 window.addEventListener("touchmove", swipe);
 window.addEventListener("touchend", move);
@@ -18,49 +21,53 @@ function generate(times) {
         boxes[index].textContent = 2;
         boxes.splice(index, 1);
     }
+    
+    repaint();
 }
     
 function repaint() {
     [...document.querySelectorAll(".box")].forEach(x => {
-        const number = x.textContent;
+        const number = Number(x.textContent);
         x.classList.remove("lock");
-        x.style.color = "#000";
-        x.style.backgroundColor = "#eaeaea";
         
-        switch (number) {
-            case "2":
-                x.style.backgroundColor = "#efe7dc";
-                break;
-            case "4":
-                x.style.backgroundColor = "#f3dec3";
-                break;
-            case "8":
-                x.style.backgroundColor = "#fbd29c";
-                break;
-            case "16":
-                x.style.backgroundColor = "#fbd173";
-                break;
-            case "32":
-                x.style.backgroundColor = "#fc744e";
-                break;
-            case "64":
-                x.style.backgroundColor = "#f74b1b";
-                break;
-            case "128":
-                x.style.backgroundColor = "#fcd988";
-                break;
-            case "256":
-                x.style.backgroundColor = "#f7dd7e";
-                break;
-            case "512":
-                x.style.backgroundColor = "#f2c659";
-                break;
-            case "1024":
-                x.style.backgroundColor = "#fac332";
-                break;
-            case "2048":
-                x.style.backgroundColor = "#feb316";
-                break;
+        if (number == 2) {
+            x.style.color = "#000";
+            x.style.backgroundColor = "#efe7dc";
+        } else if (number == 4) {
+            x.style.color = "#000";
+            x.style.backgroundColor = "#f3dec3";
+        } else if (number == 8) {
+            x.style.color = "#000";
+            x.style.backgroundColor = "#fbd29c";
+        } else if (number == 16) {
+            x.style.color = "#000";
+            x.style.backgroundColor = "#fbd173";
+        } else if (number == 32) {
+            x.style.color = "#fff";
+            x.style.backgroundColor = "#fc744e";
+        } else if (number == 64) {
+            x.style.color = "#fff";
+            x.style.backgroundColor = "#f74b1b";
+        } else if (number == 128) {
+            x.style.color = "#fff";
+            x.style.backgroundColor = "#fcd988";
+        } else if (number == 256) {
+            x.style.color = "#fff";
+            x.style.backgroundColor = "#f7dd7e";
+        } else if (number == 512) {
+            x.style.color = "#fff";
+            x.style.backgroundColor = "#f2c659";
+        } else if (number == 1024) {
+            x.style.color = "#fff";
+            x.style.backgroundColor = "#fac332";
+        } else if (number == 2048) {
+            x.style.color = "#fff";
+            x.style.backgroundColor = "#feb316";
+        } else if (number > 2048) {
+            x.style.color = "#fff";
+            x.style.backgroundColor = "#000";
+        } else {
+            x.style.backgroundColor = "#ccc0b3";
         }
     });
 }
@@ -72,7 +79,6 @@ function touch(e) {
 
 function swipe(e) {
     if (info.classList.contains("beggining")) info.style.display = "none";
-    document.querySelector("body").requestFullscreen();
     moveX = e.touches[0].clientX;
     moveY = e.touches[0].clientY;
 }
@@ -110,6 +116,7 @@ function operate(box, index, range, step, move) {
                         next = true;
                     } else if (box[i+j].textContent == box[i+j-step].textContent && !box[i+j-step].classList.contains("lock")) {
                         if (box[i+j].classList.contains("lock")) continue;
+                        point += Number(box[i+j].textContent);
                         box[i+j-step].textContent = Number(box[i+j].textContent) + Number(box[i+j-step].textContent);
                         box[i+j-step].classList.add("lock");
                         box[i+j].textContent = "";
@@ -123,6 +130,7 @@ function operate(box, index, range, step, move) {
                         next = true;
                     } else if (box[i-j].textContent == box[i-j+step].textContent && !box[i-j+step].classList.contains("lock")) {
                         if (box[i-j].classList.contains("lock")) continue;
+                        point += Number(box[i-j].textContent);
                         box[i-j+step].textContent = Number(box[i-j].textContent) + Number(box[i-j+step].textContent);
                         box[i-j+step].classList.add("lock");
                         box[i-j].textContent = "";
@@ -135,7 +143,16 @@ function operate(box, index, range, step, move) {
     
     repaint();
     if (next) generate(1);
+    scoreOperate();
     finalCheck();
+}
+
+function scoreOperate() {
+    score.textContent = point;
+    if (highPoint < point){
+        highPoint = point;
+        highScore.textContent = highPoint;
+    }
 }
 
 function finalCheck() {
@@ -151,13 +168,10 @@ function finalCheck() {
     
     for (let x of boxes) {
         if (x.textContent == "") return;
-    }
-    
-    for (let i = 0; i < boxes.length; i++) {
+    } for (let i = 0; i < boxes.length; i++) {
         if (i == 3 || i == 7 || i == 11 || i == 15) continue;
         if (boxes[i].textContent == boxes[i+1].textContent) return;
-    } 
-    for (let i = 0; i < boxes.length; i++) {
+    } for (let i = 0; i < boxes.length; i++) {
         if (i == 12 || i == 13 || i == 14 || i == 15) continue;
         if (boxes[i].textContent == boxes[i+4].textContent) return;
     }
@@ -170,7 +184,13 @@ function finalCheck() {
 function reset() {
     [...document.querySelectorAll(".box")].forEach(x => {
         x.textContent = "";
-        x.style.backgroundColor = "#eaeaea";
+        x.style.backgroundColor = "#ccc0b3";
     });
+    
+    info.textContent = "Swipe to start";
+    info.setAttribute("class", "beggining");
+    info.style.display = "block";
+    point = 0;
+    score.textContent = point;
     generate(2);
 }
