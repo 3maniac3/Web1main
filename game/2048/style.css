@@ -1,0 +1,134 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+}
+
+.container {
+    width: 90%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.container h1 {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    border: 1px solid;
+    border-radius: 20px;
+    animation: showUp 1s ease;
+}
+
+.score-panel {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+    border-radius: 20px;
+    animation: showUp 1s ease;
+}
+
+.score-panel div {
+    width: 100%;
+    text-align: center;
+    border-radius: 15px;
+    background-color: #fff;
+}
+
+.score-panel button {
+    width: 100%;
+    padding: .6em;
+    font-size: 1em;
+    font-weight: bold;
+    border: none;
+    border-radius: 15px;
+    color: #fff;
+    background-color: #ff0000;
+}
+
+@keyframes showUp {
+    0% {
+        transform: translateY(calc(100% + 1em));
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.game-box {
+    width: 100%;
+    padding: .5em;
+    overflow: hidden;
+    z-index: 10;
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: .5em;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    background-color: #000;
+}
+
+
+.game-box .box {
+    width: 100%;
+    aspect-ratio: 1;
+    font-size: 1.5em;
+    font-weight: bold;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    background-color: #eaeaea;
+    transition: .5s linear;
+}
+
+#info.beggining {
+    font-weight: bold;
+    position: absolute;
+    bottom: 10%;
+    color: #fff;
+    animation: infoMovement 1s linear infinite;
+}
+
+#info.win {
+    font-size: 1em;
+    font-weight: bold;
+    position: absolute;
+    bottom: 10%;
+    color: #00ff00;
+}
+
+#info.lose {
+    font-size: 1em;
+    font-weight: bold;
+    position: absolute;
+    bottom: 10%;
+    color: #ff0000;
+}
+
+@keyframes infoMovement {
+    0%,
+    100% {
+        transform: scale(2);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+}
