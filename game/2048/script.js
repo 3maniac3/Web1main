@@ -14,7 +14,7 @@ window.addEventListener("keypress", keyPressed);
 
 function getScore() {
     highPoint = localStorage.getItem("highScore");
-    highScore.textContent = highPoint;
+    if (highPoint != "") highScore.textContent = highPoint;
 }
 
 function generate(times) {
