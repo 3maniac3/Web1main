@@ -6,7 +6,7 @@ const radius = 50;
 let startX, startY, moveX, moveY;
 let point = 0, highPoint = 0;
 
-window.addEventListener("load", () => { getScore; generate(2); });
+window.addEventListener("load", () => { getScore(); generate(2); });
 window.addEventListener("touchstart", touch);
 window.addEventListener("touchmove", swipe);
 window.addEventListener("touchend", move);
@@ -14,6 +14,7 @@ window.addEventListener("keypress", keyPressed);
 
 function getScore() {
     highPoint = localStorage.getItem("highScore");
+    highScore.textContent = highPoint;
 }
 
 function generate(times) {
@@ -153,6 +154,7 @@ function operate(box, index, range, step, move) {
 
 function scoreOperate() {
     score.textContent = point;
+    
     if (highPoint < point){
         highPoint = point;
         highScore.textContent = highPoint;
@@ -181,7 +183,7 @@ function finalCheck() {
         if (boxes[i].textContent == boxes[i+4].textContent) return;
     }
     
-    if (highPoint < localStorage.getItem("highScore")) localStorage.setItem("highScore", highPoint);
+    if (point > localStorage.getItem("highScore")) localStorage.setItem("highScore", point);
     
     info.textContent = "Game Over!";
     info.setAttribute("class", "lose");
