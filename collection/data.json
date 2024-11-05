@@ -9,6 +9,12 @@
     ],
     "games": [
         {
+            "icon": "../asset/icon/game-2048.png",
+            "name": "2048",
+            "link": "game/2048",
+            "description": "It's the real puzzle game. Play and try to reach the number of 2048 or may be you can get even higher!"
+        },
+        {
             "icon": "../asset/icon/game-ttt.png",
             "name": "Tic Tac Toe",
             "link": "game/ttt-v2",
