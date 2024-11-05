@@ -6,11 +6,15 @@ const radius = 50;
 let startX, startY, moveX, moveY;
 let point = 0, highPoint = 0;
 
-window.addEventListener("load", () => generate(2));
+window.addEventListener("load", () => { getScore; generate(2); });
 window.addEventListener("touchstart", touch);
 window.addEventListener("touchmove", swipe);
 window.addEventListener("touchend", move);
 window.addEventListener("keypress", keyPressed);
+
+function getScore() {
+    highPoint = localStorage.getItem("highScore");
+}
 
 function generate(times) {
     const boxes = [...document.querySelectorAll(".box")].filter(x => x.textContent == "");
@@ -176,6 +180,8 @@ function finalCheck() {
         if (i == 12 || i == 13 || i == 14 || i == 15) continue;
         if (boxes[i].textContent == boxes[i+4].textContent) return;
     }
+    
+    if (highPoint < localStorage.getItem("highScore")) localStorage.setItem("highScore", highPoint);
     
     info.textContent = "Game Over!";
     info.setAttribute("class", "lose");
