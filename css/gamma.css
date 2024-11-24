@@ -1,0 +1,53 @@
+.gamma-assistant {
+    margin: 2em;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+}
+
+.gamma-assistant h2 {
+    border-bottom: 1px solid #ffffff50;
+}
+
+.gamma-assistant h1 {
+    width: 1.5em;
+    height: 1.5em;
+    margin-top: 1em;
+    font-size: 2.5em;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color: #000;
+    background-color: #fff;
+}
+
+.gamma-assistant h3 {
+    margin-top: .5em;
+    font-size: 1.5em;
+    font-weight: bold;
+    align-self: center;
+}
+
+.gamma-assistant a {
+    width: 30%;
+    margin-top: 1em;
+    padding: 10px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    align-self: center;
+    border: 1px solid #00ff00;
+    border-radius: 100px;
+    color: #00ff00;
+}
+
+.gamma-assistant a:active {
+    color: #000;
+    background-color: #00ff00;
+}
+
+.gamma-assistant p {
+    margin-top: 2em;
+}
