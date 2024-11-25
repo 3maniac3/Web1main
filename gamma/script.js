@@ -4,6 +4,7 @@ const GOOGLE_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-p
 
 // Elements
 const chatContainer = document.querySelector(".chat-container");
+const chatSection = document.querySelector(".chat-section");
 const textInput = document.getElementById("text-input");
 
 let stayVal = 0; // The value will be changed based on textInput wrap
@@ -26,6 +27,7 @@ textInput.addEventListener("input", e => {
 window.addEventListener("load", () => {
     const text = "Hello, I'm Gamma your assistant. How can i help you today?";
     createBotChat(text);
+    chatContainer.style.height = chatSection.offsetTop - chatSection.offsetHeight - 7 + "px";
 });
 
 // Send a message to the AI and return the answer
