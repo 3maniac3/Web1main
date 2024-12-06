@@ -228,7 +228,7 @@ const charSelectBox = [
 ];
 
 // system
-let system = "character-select";
+let system = "gameplay";
 
 // sounds
 let mainGameSound = new Audio("streetfighter-asset/sound/in_game_music.ogg");
